@@ -1,0 +1,198 @@
+/* Sharing Page */
+.create-token-section,
+.shared-tokens-section {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.create-token-section h2,
+.shared-tokens-section h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.create-form {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.create-form .form-group {
+  flex: 1;
+  margin: 0;
+}
+
+.create-form .form-group label {
+  margin-bottom: 5px;
+  font-size: 13px;
+}
+
+.create-form .form-group select {
+  padding: 10px;
+}
+
+.create-form button {
+  padding: 10px 20px;
+  margin: 0;
+}
+
+.tokens-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 15px;
+}
+
+.token-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s;
+}
+
+.token-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.token-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.token-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.token-header h3 {
+  margin: 0;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.access-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.access-view {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.access-edit {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.token-date {
+  color: #999;
+  font-size: 12px;
+  margin: 0;
+}
+
+.token-link {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.token-link input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+.token-link button {
+  padding: 10px 15px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.token-link button:hover {
+  background-color: #0b7dda;
+}
+
+.token-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  border-top: 1px solid #eee;
+  padding-top: 15px;
+}
+
+.token-actions button {
+  flex: 1;
+  padding: 10px;
+}
+
+.sharing-info {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #4CAF50;
+}
+
+.sharing-info h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.sharing-info ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sharing-info li {
+  padding: 10px 0;
+  color: #666;
+  font-size: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.sharing-info li:last-child {
+  border-bottom: none;
+}
+
+.sharing-info strong {
+  color: #2c3e50;
+}
+
+@media (max-width: 768px) {
+  .create-form {
+    flex-direction: column;
+  }
+
+  .create-form button {
+    width: 100%;
+  }
+
+  .tokens-list {
+    grid-template-columns: 1fr;
+  }
+
+  .token-link {
+    flex-direction: column;
+  }
+
+  .token-actions {
+    flex-direction: column;
+  }
+}

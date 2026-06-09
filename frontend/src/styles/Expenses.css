@@ -1,0 +1,202 @@
+/* Expenses Page */
+.budget-overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.budget-card,
+.categories-breakdown {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #4CAF50;
+}
+
+.budget-card h3,
+.categories-breakdown h3 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.budget-stat {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.budget-stat:last-child {
+  border-bottom: none;
+}
+
+.budget-stat .label {
+  color: #666;
+  font-weight: 500;
+}
+
+.budget-stat .value {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.budget-stat .value.spent {
+  color: #f44336;
+}
+
+.budget-stat .value.over-budget {
+  color: #f44336;
+}
+
+.budget-progress {
+  margin-top: 15px;
+}
+
+.progress-bar {
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.budget-progress p {
+  color: #666;
+  font-size: 13px;
+  margin: 0;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  color: #666;
+}
+
+.category-item:last-child {
+  border-bottom: none;
+}
+
+.category-item span:last-child {
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+.expenses-table {
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1.5fr;
+  gap: 10px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px 8px 0 0;
+  font-weight: 600;
+  color: #2c3e50;
+  border-bottom: 2px solid #ddd;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1.5fr;
+  gap: 10px;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+}
+
+.table-row:hover {
+  background-color: #f8f9fa;
+}
+
+.col-name {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.col-category {
+  text-align: center;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.cat-transport {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.cat-accommodation {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.cat-food {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.cat-tickets {
+  background-color: #f1f8e9;
+  color: #558b2f;
+}
+
+.cat-shopping {
+  background-color: #ffe0b2;
+  color: #e65100;
+}
+
+.cat-other {
+  background-color: #eceff1;
+  color: #37474f;
+}
+
+.col-amount {
+  text-align: right;
+  font-weight: 600;
+  color: #4CAF50;
+}
+
+.col-date {
+  text-align: center;
+  color: #666;
+  font-size: 13px;
+}
+
+.col-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .budget-overview {
+    grid-template-columns: 1fr;
+  }
+
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+  }
+
+  .col-actions {
+    margin-top: 10px;
+  }
+}

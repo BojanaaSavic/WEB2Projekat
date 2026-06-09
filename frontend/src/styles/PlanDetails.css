@@ -1,0 +1,162 @@
+/* Plan Details */
+.plan-details {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.plan-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #eee;
+}
+
+.plan-title h1 {
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.plan-description {
+  color: #666;
+  font-size: 14px;
+}
+
+.plan-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.plan-info-banner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.info-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+.info-value.negative {
+  color: #f44336;
+}
+
+.plan-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  border-bottom: 2px solid #eee;
+  overflow-x: auto;
+}
+
+.tab-button {
+  padding: 10px 15px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: #666;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+  white-space: nowrap;
+}
+
+.tab-button:hover {
+  color: #4CAF50;
+}
+
+.tab-button.active {
+  color: #4CAF50;
+  border-bottom-color: #4CAF50;
+}
+
+.tab-content {
+  margin-top: 20px;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.overview-card {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #4CAF50;
+}
+
+.overview-card h3 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.overview-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.overview-card li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.overview-card li:last-child {
+  border-bottom: none;
+}
+
+.overview-card a {
+  color: #4CAF50;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.overview-card a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .plan-header {
+    flex-direction: column;
+  }
+
+  .plan-actions {
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  .plan-actions button {
+    flex: 1;
+  }
+
+  .plan-info-banner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .plan-tabs {
+    flex-wrap: wrap;
+  }
+}
