@@ -1,11 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Domain",
-    "\\Web1",
-    "\\WebProjekat",
-    "\\WebProjekat.Application"
+    "\\WebProjekat"
   ],
-  "SelectedNode": "\\WebProjekat",
+  "SelectedNode": "\\WebProjekat\\WebProjekat.sln",
   "PreviewInSolutionExplorer": false
 }
