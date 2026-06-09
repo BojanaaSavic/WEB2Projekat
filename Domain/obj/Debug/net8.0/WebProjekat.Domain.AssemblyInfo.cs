@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("WebProjekat.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+562b9eff718347857c680db2687d6174d4140625")]
 [assembly: System.Reflection.AssemblyProductAttribute("WebProjekat.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("WebProjekat.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

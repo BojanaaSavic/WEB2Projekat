@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Web1\\Web1.csproj": {}
+    "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Web1\\Web1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Domain\\WebProjekat.Domain.csproj": {
+    "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Domain\\WebProjekat.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Domain\\WebProjekat.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Domain\\WebProjekat.Domain.csproj",
         "projectName": "WebProjekat.Domain",
-        "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Domain\\WebProjekat.Domain.csproj",
+        "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Domain\\WebProjekat.Domain.csproj",
         "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -69,14 +69,14 @@
         }
       }
     },
-    "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Web1\\Web1.csproj": {
+    "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Web1\\Web1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Web1\\Web1.csproj",
+        "projectUniqueName": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Web1\\Web1.csproj",
         "projectName": "Web1",
-        "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Web1\\Web1.csproj",
+        "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Web1\\Web1.csproj",
         "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Web1\\obj\\",
+        "outputPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Web1\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -97,11 +97,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Application\\WebProjekat.Application.csproj": {
-                "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Application\\WebProjekat.Application.csproj"
+              "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Application\\WebProjekat.Application.csproj": {
+                "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Application\\WebProjekat.Application.csproj"
               },
-              "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj"
+              "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj"
               }
             }
           }
@@ -125,6 +125,10 @@
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "Microsoft.AspNetCore.Mvc.TagHelpers": {
+              "target": "Package",
+              "version": "[2.3.10, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -169,14 +173,14 @@
         }
       }
     },
-    "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Application\\WebProjekat.Application.csproj": {
+    "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Application\\WebProjekat.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Application\\WebProjekat.Application.csproj",
+        "projectUniqueName": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Application\\WebProjekat.Application.csproj",
         "projectName": "WebProjekat.Application",
-        "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Application\\WebProjekat.Application.csproj",
+        "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Application\\WebProjekat.Application.csproj",
         "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Application\\obj\\",
+        "outputPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -197,11 +201,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Domain\\WebProjekat.Domain.csproj": {
-                "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Domain\\WebProjekat.Domain.csproj"
+              "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Domain\\WebProjekat.Domain.csproj": {
+                "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Domain\\WebProjekat.Domain.csproj"
               },
-              "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj"
+              "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj"
               }
             }
           }
@@ -255,14 +259,14 @@
         }
       }
     },
-    "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj": {
+    "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj",
         "projectName": "WebProjekat.Infrastructure",
-        "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj",
+        "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Infrastructure\\WebProjekat.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\Korisnik\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\WebProjekat.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\WebProjekat.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -283,8 +287,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Domain\\WebProjekat.Domain.csproj": {
-                "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\Proj1\\Domain\\WebProjekat.Domain.csproj"
+              "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Domain\\WebProjekat.Domain.csproj": {
+                "projectPath": "C:\\Users\\Korisnik\\OneDrive\\Desktop\\Bojana\\School\\Cetvrta\\Web2\\PROJmain\\Domain\\WebProjekat.Domain.csproj"
               }
             }
           }

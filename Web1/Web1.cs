@@ -19,6 +19,7 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Web1
 {
@@ -131,7 +132,7 @@ namespace Web1
                             options.OrderActionsBy((apiDesc) =>
                             {
                                 var tags = apiDesc.ActionDescriptor.EndpointMetadata
-                                    .OfType<Microsoft.AspNetCore.Mvc.TagsAttribute>()
+                                    .OfType<TagsAttribute>()
                                     .FirstOrDefault();
                                 return tags?.Tags.FirstOrDefault() ?? "Other";
                             });
