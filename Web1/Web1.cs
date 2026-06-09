@@ -128,7 +128,6 @@ namespace Web1
                                 }
                             });
 
-                            // Sort tags for better organization
                             options.OrderActionsBy((apiDesc) =>
                             {
                                 var tags = apiDesc.ActionDescriptor.EndpointMetadata
