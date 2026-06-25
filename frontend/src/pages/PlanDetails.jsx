@@ -49,9 +49,9 @@ export default function PlanDetails() {
     return <div className="error-message">Travel plan not found</div>;
   }
 
-  const totalExpenses = plan.getTotalExpenses();
-  const remainingBudget = plan.getRemainingBudget();
-  const daysUntilStart = plan.getDaysUntilStart();
+  const totalExpenses = plan.totalExpenses ?? 0;
+  const remainingBudget = plan.remainingBudget ?? 0;
+  const daysUntilStart = Math.ceil((new Date(plan.startDate) - new Date()) / (1000 * 60 * 60 * 24));
 
   return (
     <div className="plan-details">

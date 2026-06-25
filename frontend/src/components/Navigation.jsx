@@ -38,6 +38,11 @@ export default function Navigation() {
 
           <div className="user-section">
             <span className="user-name">{user?.name}</span>
+             {user?.role === 'Admin' && (
+               <Link to="/admin" className="nav-link">
+                 Admin Panel
+               </Link>
+            )}
             <button className="btn-logout" onClick={handleLogout}>
               Logout
             </button>
