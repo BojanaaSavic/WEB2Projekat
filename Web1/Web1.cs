@@ -1,4 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Services.Communication.AspNetCore;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
@@ -8,18 +14,13 @@ using System.Collections.Generic;
 using System.Fabric;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using WebProjekat.Application.Interfaces;
 using WebProjekat.Application.Services;
 using WebProjekat.Infrastructure.Persistence;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Web1
 {
@@ -51,6 +52,7 @@ namespace Web1
                             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
                         builder.Services.AddScoped<IUserService, UserService>();
                         builder.Services.AddScoped<ITravelPlanService, TravelPlanService>();
+                        builder.Services.AddScoped<IAdminService, AdminService>();
 
                         // JWT Authentication
                         var jwtKey = builder.Configuration["Jwt:Key"];
@@ -88,7 +90,10 @@ namespace Web1
                                               .AllowAnyMethod()
                                               .AllowAnyHeader());
                         });
-                        builder.Services.AddControllers();
+                        builder.Services.AddControllers().AddJsonOptions(options =>
+                        {
+                            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                        });
                         builder.Services.AddEndpointsApiExplorer();
                         builder.Services.AddSwaggerGen(options =>
                         {

@@ -85,6 +85,7 @@ namespace WebProjekat.Application.Services
             return true;
         }
 
+        //Travel Plan Shring
         public async Task<string> SharePlanAsync(Guid id, Guid ownerId, string accessLevel, TimeSpan validFor)
         {
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == id && p.OwnerId == ownerId);
@@ -117,6 +118,41 @@ namespace WebProjekat.Application.Services
             return (MapToDto(shared.TravelPlan), shared.AccessLevel.ToString());
         }
 
+        public async Task<IEnumerable<SharedTokenDTO>> GetSharedTokensAsync(Guid planId, Guid ownerId)
+        {
+            var plan = await _context.TravelPlans
+                .FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
+            if (plan == null) return null;
+
+            var tokens = await _context.SharedPlanTokens
+                .Where(t => t.TravelPlanId == planId && t.IsValid())
+                .ToListAsync();
+
+            return tokens.Select(t => new SharedTokenDTO
+            {
+                Id = t.Id,
+                Token = t.Token,
+                AccessType = t.AccessLevel.ToString(),
+                CreatedAt = t.CreatedAt,
+                ExpiresAt = t.ExpiresAt
+            });
+        }
+
+        public async Task<bool> DeleteSharedTokenAsync(Guid planId, Guid tokenId, Guid ownerId)
+        {
+            var plan = await _context.TravelPlans
+                .FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
+            if (plan == null) return false;
+
+            var token = await _context.SharedPlanTokens
+                .FirstOrDefaultAsync(t => t.Id == tokenId && t.TravelPlanId == planId);
+            if (token == null) return false;
+
+            _context.SharedPlanTokens.Remove(token);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         // Destination
         public async Task<DestinationDTO> AddDestinationAsync(Guid planId, DestinationDTO dto, Guid ownerId)
         {
@@ -130,18 +166,26 @@ namespace WebProjekat.Application.Services
             return dto;
         }
 
-        public async Task<bool> UpdateDestinationAsync(Guid planId, Guid destinationId, DestinationDTO dto, Guid ownerId)
+        public async Task<DestinationDTO> UpdateDestinationAsync(Guid planId, Guid destinationId, DestinationDTO dto, Guid ownerId)
         {
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
-            if (plan == null) return false;
+            if (plan == null) return null;
 
             var dest = await _context.Destinations.FirstOrDefaultAsync(d => d.Id == destinationId && d.TravelPlanId == planId);
-            if (dest == null) return false;
+            if (dest == null) return null;
 
             dest.Update(dto.Name, dto.Location, dto.ArrivalDate, dto.DepartureDate, dto.Description);
-            _context.Destinations.Update(dest);
+            _context.Destinations.Update(dest); //posibly won't need check with db
             await _context.SaveChangesAsync();
-            return true;
+            return new DestinationDTO
+            {
+                Id = dest.Id,
+                Name = dest.Name,
+                Location = dest.Location,
+                ArrivalDate = dest.ArrivalDate,
+                DepartureDate = dest.DepartureDate,
+                Description = dest.Description
+            };
         }
 
         public async Task<bool> RemoveDestinationAsync(Guid planId, Guid destinationId, Guid ownerId)
@@ -208,18 +252,27 @@ namespace WebProjekat.Application.Services
             return dto;
         }
 
-        public async Task<bool> UpdateActivityAsync(Guid planId, Guid activityId, ActivityDTO dto, Guid ownerId)
+        public async Task<ActivityDTO> UpdateActivityAsync(Guid planId, Guid activityId, ActivityDTO dto, Guid ownerId)
         {
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
-            if (plan == null) return false;
+            if (plan == null) return null;
 
             var act = await _context.Activities.FirstOrDefaultAsync(a => a.Id == activityId && a.TravelPlanId == planId);
-            if (act == null) return false;
+            if (act == null) return null;
 
             act.Update(dto.Name, dto.ScheduledAt, dto.Location, dto.Description, dto.EstimatedCost, dto.Status);
             _context.Activities.Update(act);
             await _context.SaveChangesAsync();
-            return true;
+            return new ActivityDTO
+            {
+                Id = act.Id,
+                Name = act.Name,
+                ScheduledAt = act.ScheduledAt,
+                Location = act.Location,
+                Description = act.Description,
+                EstimatedCost = act.EstimatedCost,
+                Status = act.Status
+            };
         }
 
         public async Task<bool> RemoveActivityAsync(Guid planId, Guid activityId, Guid ownerId)
@@ -288,18 +341,26 @@ namespace WebProjekat.Application.Services
             return dto;
         }
 
-        public async Task<bool> UpdateExpenseAsync(Guid planId, Guid expenseId, ExpenseDTO dto, Guid ownerId)
+        public async Task<ExpenseDTO> UpdateExpenseAsync(Guid planId, Guid expenseId, ExpenseDTO dto, Guid ownerId)
         {
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
-            if (plan == null) return false;
+            if (plan == null) return null;
 
             var exp = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == expenseId && e.TravelPlanId == planId);
-            if (exp == null) return false;
+            if (exp == null) return null;
 
             exp.Update(dto.Name, dto.Category, dto.Amount, dto.Date, dto.Description);
             _context.Expenses.Update(exp);
             await _context.SaveChangesAsync();
-            return true;
+            return new ExpenseDTO
+            {
+                Id = exp.Id,
+                Name = exp.Name,
+                Category = exp.Category,
+                Amount = exp.Amount,
+                Date = exp.Date,
+                Description = exp.Description
+            };
         }
 
         public async Task<bool> RemoveExpenseAsync(Guid planId, Guid expenseId, Guid ownerId)
@@ -359,25 +420,31 @@ namespace WebProjekat.Application.Services
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
             if (plan == null) return null;
 
-            var item = new ChecklistItem(plan.Id, dto.Name, dto.IsCompleted);
+            var item = new ChecklistItem(plan.Id, dto.Title, dto.IsCompleted, dto.Description);
             _context.ChecklistItems.Add(item);
             await _context.SaveChangesAsync();
             dto.Id = item.Id;
             return dto;
         }
 
-        public async Task<bool> UpdateChecklistItemAsync(Guid planId, Guid checklistItemId, ChecklistItemDTO dto, Guid ownerId)
+        public async Task<ChecklistItemDTO> UpdateChecklistItemAsync(Guid planId, Guid checklistItemId, ChecklistItemDTO dto, Guid ownerId)
         {
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
-            if (plan == null) return false;
+            if (plan == null) return null;
 
             var item = await _context.ChecklistItems.FirstOrDefaultAsync(c => c.Id == checklistItemId && c.TravelPlanId == planId);
-            if (item == null) return false;
+            if (item == null) return null;
 
-            item.Update(dto.Name, dto.IsCompleted);
+            item.Update(dto.Title, dto.IsCompleted, dto.Description);
             _context.ChecklistItems.Update(item);
             await _context.SaveChangesAsync();
-            return true;
+            return new ChecklistItemDTO
+            {
+                Id = item.Id,
+                Title = item.Title,
+                IsCompleted = item.IsCompleted,
+                Description = item.Description,
+            };
         }
 
         public async Task<bool> RemoveChecklistItemAsync(Guid planId, Guid checklistItemId, Guid ownerId)
@@ -404,7 +471,7 @@ namespace WebProjekat.Application.Services
             return new ChecklistItemDTO
             {
                 Id = item.Id,
-                Name = item.Name,
+                Title = item.Title,
                 IsCompleted = item.IsCompleted
             };
         }
@@ -420,7 +487,7 @@ namespace WebProjekat.Application.Services
             return plan.ChecklistItems.Select(c => new ChecklistItemDTO
             {
                 Id = c.Id,
-                Name = c.Name,
+                Title = c.Title,
                 IsCompleted = c.IsCompleted
             }).ToList();
         }
@@ -503,7 +570,7 @@ namespace WebProjekat.Application.Services
                 ChecklistItems = p.ChecklistItems?.Select(c => new ChecklistItemDTO
                 {
                     Id = c.Id,
-                    Name = c.Name,
+                    Title = c.Title,
                     IsCompleted = c.IsCompleted
                 }).ToList()
             };

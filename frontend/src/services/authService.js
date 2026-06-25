@@ -2,29 +2,26 @@ import api from './api';
 import { User, AuthResponse } from '../models/User';
 
 export const authService = {
-  // Login
   login: async (email, password) => {
     try {
       const response = await api.post('/api/auth/login', { email, password });
-      const { token, userId, name, email: userEmail } = response.data;
-      return new AuthResponse(token, new User(userId, name, userEmail, 'User'));
+      const { token, userId, name, email: userEmail, role } = response.data;
+      return new AuthResponse(token, new User(userId, name, userEmail, role || 'User'));
     } catch (error) {
       throw error.response?.data?.message || 'Login failed';
     }
   },
 
-  // Register
   register: async (name, email, password) => {
     try {
       const response = await api.post('/api/auth/register', { name, email, password });
-      const { token, userId, name: userName, email: userEmail } = response.data;
-      return new AuthResponse(token, new User(userId, userName, userEmail, 'User'));
+      const { token, userId, name: userName, email: userEmail, role } = response.data;
+      return new AuthResponse(token, new User(userId, userName, userEmail, role || 'User'));
     } catch (error) {
       throw error.response?.data?.message || 'Registration failed';
     }
   },
 
-  // Get current user
   getCurrentUser: async () => {
     try {
       const response = await api.get('/api/auth/me');

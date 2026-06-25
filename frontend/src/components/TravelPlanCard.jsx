@@ -7,18 +7,17 @@ export default function TravelPlanCard({ plan }) {
   const navigate = useNavigate();
   const { deletePlan } = useContext(TravelPlanContext);
 
-  const handleDelete = async (e) => {
-    e.stopPropagation();
-    if (window.confirm(`Delete "${plan.name}"?`)) {
-      try {
-        deletePlan(plan.id);
-        // The API call should be done in the Dashboard component
-        navigate('/dashboard');
-      } catch (err) {
-        console.error('Failed to delete plan:', err);
-      }
-    }
-  };
+    const handleDelete = async (e) => {
+        e.stopPropagation();
+        if (window.confirm(`Delete "${plan.name}"?`)) {
+            try {
+                await travelPlanService.deletePlan(plan.id);
+                deletePlan(plan.id);
+            } catch (err) {
+                console.error('Failed to delete plan:', err);
+            }
+        }
+    };
 
   const daysUntilStart = plan.getDaysUntilStart();
   const totalExpenses = plan.getTotalExpenses();

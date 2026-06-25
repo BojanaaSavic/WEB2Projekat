@@ -14,6 +14,7 @@ namespace WebProjekat.Domain.Entities
         public Guid TravelPlanId { get; private set; }
         public string Token { get; private set; }
         public ShareAccessLevel AccessLevel { get; private set; }
+        public DateTime CreatedAt { get; private set; } 
         public DateTime ExpiresAt { get; private set; }
 
         public TravelPlan TravelPlan { get; private set; }
@@ -25,6 +26,7 @@ namespace WebProjekat.Domain.Entities
             TravelPlanId = travelPlanId;
             Token = Guid.NewGuid().ToString("N");
             AccessLevel = accessLevel;
+            CreatedAt = DateTime.UtcNow;
             ExpiresAt = DateTime.UtcNow.Add(validFor);
         }
 

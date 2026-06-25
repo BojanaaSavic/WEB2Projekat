@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using QRCoder;
+using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using WebProjekat.Application.DTOs;
 using WebProjekat.Application.Interfaces;
 using WebProjekat.Domain.Entities;
-using System;
-using System.Threading.Tasks;
 
 namespace Web1.Controllers
 {
@@ -166,6 +167,71 @@ namespace Web1.Controllers
             return Ok(new { token });
         }
 
+        [HttpGet("{planId:guid}/share")]
+        [Tags("Sharing")]
+        /// <summary>
+        /// Get all active share tokens for a travel plan
+        /// </summary>
+        public async Task<IActionResult> GetSharedTokens(Guid planId)
+        {
+            var ownerId = GetCurrentUserId();
+            if (ownerId == Guid.Empty) return Unauthorized();
+
+            var plan = await _travelPlanService.GetByIdAsync(planId, ownerId);
+            if (plan == null) return NotFound();
+
+            var tokens = await _travelPlanService.GetSharedTokensAsync(planId, ownerId);
+            return Ok(tokens);
+        }
+
+        [HttpDelete("{planId:guid}/share/{tokenId:guid}")]
+        [Tags("Sharing")]
+        /// <summary>
+        /// Delete a share token (revoke access)
+        /// </summary>
+        public async Task<IActionResult> DeleteSharedToken(Guid planId, Guid tokenId)
+        {
+            var ownerId = GetCurrentUserId();
+            if (ownerId == Guid.Empty) return Unauthorized();
+
+            var ok = await _travelPlanService.DeleteSharedTokenAsync(planId, tokenId, ownerId);
+            if (!ok) return NotFound();
+            return NoContent();
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet("shared/{token}")]
+        [Tags("Sharing")]
+        /// <summary>
+        /// Access a shared travel plan by token
+        /// </summary>
+        public async Task<IActionResult> GetByShareToken(string token)
+        {
+            var (plan, accessLevel) = await _travelPlanService.GetByShareTokenAsync(token);
+            if (plan == null) return NotFound();
+            return Ok(new { plan, accessLevel });
+        }
+
+        [AllowAnonymous]
+        [HttpGet("shared/{token}/qr")]
+        [Tags("Sharing")]
+        /// <summary>
+        /// Generate QR code image for a shared plan token
+        /// </summary>
+        public IActionResult GetQRCode(string token)
+        {
+            var baseUrl = $"{Request.Scheme}://{Request.Host}";
+            var shareUrl = $"{baseUrl}/shared/{token}";
+
+            using var qrGenerator = new QRCodeGenerator();
+            var qrCodeData = qrGenerator.CreateQrCode(shareUrl, QRCodeGenerator.ECCLevel.Q);
+            using var qrCode = new PngByteQRCode(qrCodeData);
+            var qrCodeBytes = qrCode.GetGraphic(20);
+
+            return File(qrCodeBytes, "image/png", $"qr-{token}.png");
+        }
+
         // Sub-entity endpoints
 
         [HttpPost("{planId:guid}/destinations")]
@@ -193,9 +259,9 @@ namespace Web1.Controllers
             var ownerId = GetCurrentUserId();
             if (ownerId == Guid.Empty) return Unauthorized();
 
-            var ok = await _travelPlanService.UpdateDestinationAsync(planId, destinationId, dto, ownerId);
-            if (!ok) return NotFound();
-            return NoContent();
+            var updated = await _travelPlanService.UpdateDestinationAsync(planId, destinationId, dto, ownerId);
+            if (updated == null) return NotFound();
+            return Ok(updated);
         }
 
         [HttpDelete("{planId:guid}/destinations/{destinationId:guid}")]
@@ -270,9 +336,9 @@ namespace Web1.Controllers
             var ownerId = GetCurrentUserId();
             if (ownerId == Guid.Empty) return Unauthorized();
 
-            var ok = await _travelPlanService.UpdateActivityAsync(planId, activityId, dto, ownerId);
-            if (!ok) return NotFound();
-            return NoContent();
+            var updated = await _travelPlanService.UpdateActivityAsync(planId, activityId, dto, ownerId);
+            if (updated == null) return NotFound();
+            return Ok(updated);
         }
 
         [HttpDelete("{planId:guid}/activities/{activityId:guid}")]
@@ -347,9 +413,9 @@ namespace Web1.Controllers
             var ownerId = GetCurrentUserId();
             if (ownerId == Guid.Empty) return Unauthorized();
 
-            var ok = await _travelPlanService.UpdateExpenseAsync(planId, expenseId, dto, ownerId);
-            if (!ok) return NotFound();
-            return NoContent();
+            var updated = await _travelPlanService.UpdateExpenseAsync(planId, expenseId, dto, ownerId);
+            if (updated == null) return NotFound();
+            return Ok(updated);
         }
 
         [HttpDelete("{planId:guid}/expenses/{expenseId:guid}")]
@@ -424,9 +490,9 @@ namespace Web1.Controllers
             var ownerId = GetCurrentUserId();
             if (ownerId == Guid.Empty) return Unauthorized();
 
-            var ok = await _travelPlanService.UpdateChecklistItemAsync(planId, checklistItemId, dto, ownerId);
-            if (!ok) return NotFound();
-            return NoContent();
+            var updated = await _travelPlanService.UpdateChecklistItemAsync(planId, checklistItemId, dto, ownerId);
+            if (updated == null) return NotFound();
+            return Ok(updated);
         }
 
         [HttpDelete("{planId:guid}/checklist/{checklistItemId:guid}")]
@@ -457,18 +523,6 @@ namespace Web1.Controllers
             var calendar = await _travelPlanService.GetActivitiesCalendarAsync(planId, ownerId);
             if (calendar == null) return NotFound();
             return Ok(calendar);
-        }
-        [AllowAnonymous]
-        [HttpGet("shared/{token}")]
-        [Tags("Sharing")]
-        /// <summary>
-        /// Access a shared travel plan by token
-        /// </summary>
-        public async Task<IActionResult> GetByShareToken(string token)
-        {
-            var (plan, accessLevel) = await _travelPlanService.GetByShareTokenAsync(token);
-            if (plan == null) return NotFound();
-            return Ok(new { plan, accessLevel });
         }
     }
 }

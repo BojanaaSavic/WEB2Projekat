@@ -10,6 +10,7 @@ namespace WebProjekat.Infrastructure.Configurations
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Token).IsRequired().HasMaxLength(200);
+            builder.Property(x => x.CreatedAt).IsRequired();
             builder.Property(x => x.ExpiresAt).IsRequired();
         }
     }

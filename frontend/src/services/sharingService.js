@@ -49,7 +49,7 @@ export const sharingService = {
   // Access shared plan by token
   getSharedPlan: async (token) => {
     try {
-      const response = await api.get(`/api/shared/${token}`);
+      const response = await api.get(`/api/travelplans/shared/${token}`);
       return response.data;
     } catch (error) {
       throw error.response?.data?.message || 'Invalid or expired token';

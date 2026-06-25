@@ -40,7 +40,7 @@ namespace WebProjekat.Application.Services
             await _context.SaveChangesAsync();
 
             var token = GenerateToken(user);
-            return new AuthResponseDTO { Token = token, UserId = user.Id, Email = user.Email, Name = user.Name };
+            return new AuthResponseDTO { Token = token, UserId = user.Id, Email = user.Email, Name = user.Name, Role = user.Role };
         }
 
         public async Task<AuthResponseDTO> AuthenticateAsync(LoginDTO dto)
@@ -53,7 +53,7 @@ namespace WebProjekat.Application.Services
             if (result == PasswordVerificationResult.Failed) return null;
 
             var token = GenerateToken(user);
-            return new AuthResponseDTO { Token = token, UserId = user.Id, Email = user.Email, Name = user.Name };
+            return new AuthResponseDTO { Token = token, UserId = user.Id, Email = user.Email, Name = user.Name, Role = user.Role };
         }
 
         private string GenerateToken(User user)
