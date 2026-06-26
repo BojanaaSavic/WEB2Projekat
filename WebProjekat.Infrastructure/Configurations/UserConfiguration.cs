@@ -23,10 +23,6 @@ namespace WebProjekat.Infrastructure.Configurations
 
             builder.Property(u => u.Role)
                 .IsRequired();
-
-            builder.HasMany(u => u.TravelPlans)
-                .WithOne(tp => tp.Owner)
-                .HasForeignKey(tp => tp.OwnerId);
         }
     }
 }
