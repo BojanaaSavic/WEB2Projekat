@@ -12,9 +12,6 @@ namespace WebProjekat.Application.Interfaces
         Task<IEnumerable<AdminUserDTO>> GetAllUsersAsync();
         Task<AdminUserDTO> GetUserAsync(Guid userId);
         Task<bool> DeleteUserAsync(Guid userId);
-        Task<IEnumerable<AdminTravelPlanDTO>> GetAllTravelPlansAsync();
-        Task<AdminTravelPlanDetailDTO> GetTravelPlanAsync(Guid planId);
-        Task<bool> DeleteTravelPlanAsync(Guid planId);
-        Task<AdminStatisticsDTO> GetStatisticsAsync();
+        Task<AdminStatisticsDTO> GetUserStatisticsAsync();
     }
 }
