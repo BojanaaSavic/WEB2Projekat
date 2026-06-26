@@ -23,11 +23,6 @@ namespace WebProjekat.Infrastructure.Configurations
                    .HasForeignKey(a => a.TravelPlanId)
                    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(x => x.Expenses)
-                   .WithOne(e => e.TravelPlan)
-                   .HasForeignKey(e => e.TravelPlanId)
-                   .OnDelete(DeleteBehavior.Cascade);
-
             builder.HasMany(x => x.ChecklistItems)
                    .WithOne(c => c.TravelPlan)
                    .HasForeignKey(c => c.TravelPlanId)

@@ -12,9 +12,9 @@ namespace WebProjekat.Application.Services
 {
     public class TravelPlanService : ITravelPlanService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly TravelPlanDbContext _context;
 
-        public TravelPlanService(ApplicationDbContext context)
+        public TravelPlanService(TravelPlanDbContext context)
         {
             _context = context;
         }
@@ -41,7 +41,6 @@ namespace WebProjekat.Application.Services
         {
             var plans = await _context.TravelPlans
                 .Where(p => p.OwnerId == ownerId)
-                .Include(p => p.Expenses)
                 .Include(p => p.Destinations)
                 .Include(p => p.Activities)
                 .Include(p => p.ChecklistItems)
@@ -53,7 +52,6 @@ namespace WebProjekat.Application.Services
         public async Task<TravelPlanDTO> GetByIdAsync(Guid id, Guid ownerId)
         {
             var plan = await _context.TravelPlans
-                .Include(p => p.Expenses)
                 .Include(p => p.Destinations)
                 .Include(p => p.Activities)
                 .Include(p => p.ChecklistItems)
@@ -107,8 +105,6 @@ namespace WebProjekat.Application.Services
                     .ThenInclude(p => p.Destinations)
                 .Include(s => s.TravelPlan)
                     .ThenInclude(p => p.Activities)
-                .Include(s => s.TravelPlan)
-                    .ThenInclude(p => p.Expenses)
                 .Include(s => s.TravelPlan)
                     .ThenInclude(p => p.ChecklistItems)
                 .FirstOrDefaultAsync(s => s.Token == token && s.IsValid());
@@ -328,92 +324,6 @@ namespace WebProjekat.Application.Services
             }).ToList();
         }
 
-        // Expense
-        public async Task<ExpenseDTO> AddExpenseAsync(Guid planId, ExpenseDTO dto, Guid ownerId)
-        {
-            var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
-            if (plan == null) return null;
-
-            var expense = new Expense(plan.Id, dto.Name, dto.Category, dto.Amount, dto.Date, dto.Description);
-            _context.Expenses.Add(expense);
-            await _context.SaveChangesAsync();
-            dto.Id = expense.Id;
-            return dto;
-        }
-
-        public async Task<ExpenseDTO> UpdateExpenseAsync(Guid planId, Guid expenseId, ExpenseDTO dto, Guid ownerId)
-        {
-            var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
-            if (plan == null) return null;
-
-            var exp = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == expenseId && e.TravelPlanId == planId);
-            if (exp == null) return null;
-
-            exp.Update(dto.Name, dto.Category, dto.Amount, dto.Date, dto.Description);
-            _context.Expenses.Update(exp);
-            await _context.SaveChangesAsync();
-            return new ExpenseDTO
-            {
-                Id = exp.Id,
-                Name = exp.Name,
-                Category = exp.Category,
-                Amount = exp.Amount,
-                Date = exp.Date,
-                Description = exp.Description
-            };
-        }
-
-        public async Task<bool> RemoveExpenseAsync(Guid planId, Guid expenseId, Guid ownerId)
-        {
-            var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
-            if (plan == null) return false;
-
-            var exp = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == expenseId && e.TravelPlanId == planId);
-            if (exp == null) return false;
-
-            _context.Expenses.Remove(exp);
-            await _context.SaveChangesAsync();
-            return true;
-        }
-
-        public async Task<ExpenseDTO> GetExpenseAsync(Guid planId, Guid expenseId, Guid ownerId)
-        {
-            var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
-            if (plan == null) return null;
-
-            var exp = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == expenseId && e.TravelPlanId == planId);
-            if (exp == null) return null;
-
-            return new ExpenseDTO
-            {
-                Id = exp.Id,
-                Name = exp.Name,
-                Category = exp.Category,
-                Amount = exp.Amount,
-                Date = exp.Date,
-                Description = exp.Description
-            };
-        }
-
-        public async Task<IEnumerable<ExpenseDTO>> GetExpensesAsync(Guid planId, Guid ownerId)
-        {
-            var plan = await _context.TravelPlans
-                .Include(p => p.Expenses)
-                .FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
-
-            if (plan == null) return null;
-
-            return plan.Expenses.Select(e => new ExpenseDTO
-            {
-                Id = e.Id,
-                Name = e.Name,
-                Category = e.Category,
-                Amount = e.Amount,
-                Date = e.Date,
-                Description = e.Description
-            }).ToList();
-        }
-
         // Checklist
         public async Task<ChecklistItemDTO> AddChecklistItemAsync(Guid planId, ChecklistItemDTO dto, Guid ownerId)
         {
@@ -524,9 +434,6 @@ namespace WebProjekat.Application.Services
         }
         private TravelPlanDTO MapToDto(TravelPlan p)
         {
-            var totalExpenses = p.Expenses?.Sum(e => e.Amount) ?? 0m;
-            var remaining = p.PlannedBudget - totalExpenses;
-
             return new TravelPlanDTO
             {
                 Id = p.Id,
@@ -537,8 +444,8 @@ namespace WebProjekat.Application.Services
                 PlannedBudget = p.PlannedBudget,
                 Notes = p.Notes,
                 OwnerId = p.OwnerId,
-                TotalExpenses = totalExpenses,
-                RemainingBudget = remaining,
+                TotalExpenses = 0,
+                RemainingBudget = p.PlannedBudget,
                 Destinations = p.Destinations?.Select(d => new DestinationDTO
                 {
                     Id = d.Id,
@@ -558,15 +465,7 @@ namespace WebProjekat.Application.Services
                     EstimatedCost = a.EstimatedCost,
                     Status = a.Status
                 }).ToList(),
-                Expenses = p.Expenses?.Select(e => new ExpenseDTO
-                {
-                    Id = e.Id,
-                    Name = e.Name,
-                    Category = e.Category,
-                    Amount = e.Amount,
-                    Date = e.Date,
-                    Description = e.Description
-                }).ToList(),
+                Expenses = new List<ExpenseDTO>(),
                 ChecklistItems = p.ChecklistItems?.Select(c => new ChecklistItemDTO
                 {
                     Id = c.Id,

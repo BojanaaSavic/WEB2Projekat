@@ -28,12 +28,6 @@ namespace WebProjekat.Application.Interfaces
         Task<ActivityDTO> UpdateActivityAsync(Guid planId, Guid activityId, ActivityDTO dto, Guid ownerId);
         Task<bool> RemoveActivityAsync(Guid planId, Guid activityId, Guid ownerId);
 
-        Task<ExpenseDTO> AddExpenseAsync(Guid planId, ExpenseDTO dto, Guid ownerId);
-        Task<ExpenseDTO> GetExpenseAsync(Guid planId, Guid expenseId, Guid ownerId);
-        Task<IEnumerable<ExpenseDTO>> GetExpensesAsync(Guid planId, Guid ownerId);
-        Task<ExpenseDTO> UpdateExpenseAsync(Guid planId, Guid expenseId, ExpenseDTO dto, Guid ownerId);
-        Task<bool> RemoveExpenseAsync(Guid planId, Guid expenseId, Guid ownerId);
-
         Task<ChecklistItemDTO> AddChecklistItemAsync(Guid planId, ChecklistItemDTO dto, Guid ownerId);
         Task<ChecklistItemDTO> GetChecklistItemAsync(Guid planId, Guid checklistItemId, Guid ownerId);
         Task<IEnumerable<ChecklistItemDTO>> GetChecklistItemsAsync(Guid planId, Guid ownerId);
