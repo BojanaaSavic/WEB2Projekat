@@ -1,12 +1,14 @@
-﻿using WebProjekat.Application.DTOs;
-using WebProjekat.Application.Interfaces;
-using WebProjekat.Domain.Entities;
-using WebProjekat.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.ServiceFabric.Services.Client;
+using Microsoft.ServiceFabric.Services.Remoting.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebProjekat.Application.DTOs;
+using WebProjekat.Application.Interfaces;
+using WebProjekat.Domain.Entities;
+using WebProjekat.Infrastructure.Persistence;
 
 namespace WebProjekat.Application.Services
 {
@@ -73,17 +75,31 @@ namespace WebProjekat.Application.Services
             return MapToDto(plan);
         }
 
+
+
         public async Task<bool> DeleteAsync(Guid id, Guid ownerId)
         {
-            var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == id && p.OwnerId == ownerId);
+            var plan = await _context.TravelPlans
+                .FirstOrDefaultAsync(p => p.Id == id && p.OwnerId == ownerId);
             if (plan == null) return false;
+
+            try
+            {
+                var expenseService = ServiceProxy.Create<IExpenseRemotingService>(
+                    new Uri("fabric:/WebProjekat/ExpenseService"),
+                    new ServicePartitionKey());
+                await expenseService.DeleteExpensesByPlanAsync(id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: Could not delete expenses via remoting: {ex.Message}");
+            }
 
             _context.TravelPlans.Remove(plan);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        //Travel Plan Shring
         public async Task<string> SharePlanAsync(Guid id, Guid ownerId, string accessLevel, TimeSpan validFor)
         {
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == id && p.OwnerId == ownerId);
