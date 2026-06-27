@@ -3,22 +3,24 @@ import { SharedPlanToken } from '../models/SharedPlanToken';
 
 export const sharingService = {
   // Create shared token for plan
-  createSharedToken: async (planId, createRequest) => {
-    try {
-      const response = await api.post(`/api/travelplans/${planId}/share`, createRequest);
-      const t = response.data;
-      return new SharedPlanToken(
-        t.id,
-        t.travelPlanId,
-        t.token,
-        t.accessType,
-        t.createdAt,
-        t.expiresAt
-      );
-    } catch (error) {
-      throw error.response?.data?.message || 'Failed to create shared token';
-    }
-  },
+    createSharedToken: async (planId, createRequest) => {
+        try {
+            const accessParam = createRequest.accessType === 'EDIT' ? 'Edit' : 'View';
+
+            const response = await api.post(`/api/travelplans/${planId}/share?access=${accessParam}&validDays=7`);
+
+            return {
+                id: crypto.randomUUID(),
+                travelPlanId: planId,
+                token: response.data.token,
+                accessType: createRequest.accessType,
+                createdAt: new Date().toISOString(),
+                expiresAt: null
+            };
+        } catch (error) {
+            throw error.response?.data?.message || 'Failed to create shared token';
+        }
+    },
 
   // Get all shared tokens for plan
   getSharedTokens: async (planId) => {
@@ -59,7 +61,7 @@ export const sharingService = {
   // Generate QR code for token
   generateQRCode: async (token) => {
     try {
-      const response = await api.get(`/api/shared/${token}/qr`, {
+        const response = await api.get(`/api/travelplans/shared/${token}/qr`, {
         responseType: 'blob',
       });
       return response.data;

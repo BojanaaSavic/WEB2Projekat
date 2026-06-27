@@ -17,7 +17,6 @@ import Sharing from './pages/Sharing';
 import SharedPlanView from './pages/SharedPlanView';
 import EditPlan from './pages/EditPlan';
 import AdminPanel from './pages/AdminPanel';
-import SharedPlanView from './pages/SharedPlanView';
 
 import './App.css';
 
@@ -99,7 +98,6 @@ function App() {
                                     }
                                 />
 
-                                <Route path="/shared/:token" element={<SharedPlanView />} />
                                 <Route
                                     path="/plan/:planId/edit"
                                     element={

@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TravelPlanContext } from '../context/TravelPlanContext';
 import '../styles/TravelPlanCard.css';
+import { travelPlanService } from '../services/travelPlanService';
 
 export default function TravelPlanCard({ plan }) {
   const navigate = useNavigate();

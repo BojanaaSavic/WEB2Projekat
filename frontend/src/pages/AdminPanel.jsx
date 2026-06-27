@@ -54,7 +54,7 @@ export default function AdminPanel() {
   const fetchPlans = async () => {
     setLoading(true);
     try {
-      const res = await api.get('/api/admin/travel-plans');
+      const res = await api.get('/api/admin/travelplans');
       setPlans(res.data);
     } catch {
       setError('Failed to load plans.');
@@ -76,7 +76,7 @@ export default function AdminPanel() {
   const handleDeletePlan = async (planId) => {
     if (!window.confirm('Delete this travel plan?')) return;
     try {
-      await api.delete(`/api/admin/travel-plans/${planId}`);
+      await api.delete(`/api/admin/travelplans/${planId}`);
       setPlans(prev => prev.filter(p => p.id !== planId));
     } catch {
       setError('Failed to delete plan.');
