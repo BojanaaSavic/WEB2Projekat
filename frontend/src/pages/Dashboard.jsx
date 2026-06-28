@@ -23,25 +23,31 @@ export default function Dashboard() {
   });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate('/login');
-      return;
-    }
-    fetchTravelPlans();
-  }, [isAuthenticated, navigate]);
+    const fetchTravelPlans = async () => {
+        setLoading(true);
+        try {
+            const plans = await travelPlanService.getAllPlans();
+            setPlans(plans);
+        } catch (err) {
+            setPlans([]);
+            console.log(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const fetchTravelPlans = async () => {
-    setLoading(true);
-    try {
-      const plans = await travelPlanService.getAllPlans();
-      setPlans(plans);
-    } catch (err) {
-      setError(err.message || 'Failed to fetch travel plans');
-    } finally {
-      setLoading(false);
-    }
-  };
+    useEffect(() => {
+        if (!isAuthenticated) {
+            navigate('/login');
+            return;
+        }
+
+        const loadPlans = async () => {
+            await fetchTravelPlans();
+        };
+
+        loadPlans();
+    }, [isAuthenticated, navigate]);
 
   const handleCreatePlan = async (e) => {
     e.preventDefault();

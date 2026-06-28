@@ -7,7 +7,7 @@ import '../styles/Calendar.css';
 
 export default function Calendar() {
   const { planId } = useParams();
-  const { currentPlan, addActivity, updateActivity, deleteActivity } = useContext(TravelPlanContext);
+  const { addActivity, updateActivity, deleteActivity } = useContext(TravelPlanContext);
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -23,21 +23,25 @@ export default function Calendar() {
     status: ActivityStatus.PLANNED,
   });
 
-  useEffect(() => {
-    fetchActivities();
-  }, [planId]);
+    const fetchActivities = async () => {
+        setLoading(true);
+        try {
+            const data = await activityService.getActivities(planId);
+            setActivities(data);
+        } catch (err) {
+            setError(err.message || 'Failed to fetch activities');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const fetchActivities = async () => {
-    setLoading(true);
-    try {
-      const data = await activityService.getActivities(planId);
-      setActivities(data);
-    } catch (err) {
-      setError(err.message || 'Failed to fetch activities');
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+      const loadPlans = async () => {
+          await fetchActivities();
+      };
+
+      loadPlans();
+  }, [planId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { authService } from '../services/authService';
 import '../styles/Auth.css';
+import { useLocation } from 'react-router-dom';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,10 @@ export default function Login() {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const redirectTo = params.get('redirect') || '/dashboard';
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
@@ -20,7 +25,7 @@ export default function Login() {
     try {
       const response = await authService.login(email, password);
       login(response.user, response.token);
-      navigate('/dashboard');
+      navigate(redirectTo);
     } catch (err) {
       setError(err.message || 'Login failed. Please try again.');
     } finally {

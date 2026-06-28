@@ -21,8 +21,8 @@ export default function TravelPlanCard({ plan }) {
     };
 
   const daysUntilStart = plan.getDaysUntilStart();
-  const totalExpenses = plan.getTotalExpenses();
-  const remainingBudget = plan.getRemainingBudget();
+    const totalExpenses = plan.totalExpenses ?? plan.getTotalExpenses();
+    const remainingBudget = plan.remainingBudget ?? plan.getRemainingBudget();
 
   return (
     <div

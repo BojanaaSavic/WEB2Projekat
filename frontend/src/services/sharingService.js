@@ -6,17 +6,16 @@ export const sharingService = {
     createSharedToken: async (planId, createRequest) => {
         try {
             const accessParam = createRequest.accessType === 'EDIT' ? 'Edit' : 'View';
-
             const response = await api.post(`/api/travelplans/${planId}/share?access=${accessParam}&validDays=7`);
-
-            return {
-                id: crypto.randomUUID(),
-                travelPlanId: planId,
-                token: response.data.token,
-                accessType: createRequest.accessType,
-                createdAt: new Date().toISOString(),
-                expiresAt: null
-            };
+            const t = response.data;
+            return new SharedPlanToken(
+                t.id,
+                planId,
+                t.token,
+                t.accessType,
+                t.createdAt,
+                t.expiresAt
+            );
         } catch (error) {
             throw error.response?.data?.message || 'Failed to create shared token';
         }

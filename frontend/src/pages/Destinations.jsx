@@ -7,7 +7,7 @@ import '../styles/Destinations.css';
 
 export default function Destinations() {
   const { planId } = useParams();
-  const { currentPlan, addDestination, updateDestination, deleteDestination } = useContext(TravelPlanContext);
+  const { addDestination, updateDestination, deleteDestination } = useContext(TravelPlanContext);
   const [destinations, setDestinations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -21,21 +21,26 @@ export default function Destinations() {
     description: '',
   });
 
-  useEffect(() => {
-    fetchDestinations();
-  }, [planId]);
 
-  const fetchDestinations = async () => {
-    setLoading(true);
-    try {
-      const data = await destinationService.getDestinations(planId);
-      setDestinations(data);
-    } catch (err) {
-      setError(err.message || 'Failed to fetch destinations');
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchDestinations = async () => {
+        setLoading(true);
+        try {
+            const data = await destinationService.getDestinations(planId);
+            setDestinations(data);
+        } catch (err) {
+            setError(err.message || 'Failed to fetch destinations');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+  useEffect(() => {
+      const loadPlans = async () => {
+          await fetchDestinations();
+      };
+
+      loadPlans();
+  }, [planId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

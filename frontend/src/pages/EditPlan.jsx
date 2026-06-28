@@ -19,27 +19,31 @@ export default function EditPlan() {
     notes: '',
   });
 
-  useEffect(() => {
-    fetchPlan();
-  }, [planId]);
+    const fetchPlan = async () => {
+        try {
+            const plan = await travelPlanService.getPlan(planId);
+            setFormData({
+                name: plan.name,
+                description: plan.description || '',
+                startDate: plan.startDate.substring(0, 10),
+                endDate: plan.endDate.substring(0, 10),
+                plannedBudget: plan.plannedBudget,
+                notes: plan.notes || '',
+            });
+        } catch (err) {
+            setError('Failed to load travel plan.', err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const fetchPlan = async () => {
-    try {
-      const plan = await travelPlanService.getPlan(planId);
-      setFormData({
-        name: plan.name,
-        description: plan.description || '',
-        startDate: plan.startDate.substring(0, 10),
-        endDate: plan.endDate.substring(0, 10),
-        plannedBudget: plan.plannedBudget,
-        notes: plan.notes || '',
-      });
-    } catch (err) {
-      setError('Failed to load travel plan.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+      const loadPlans = async () => {
+          await fetchPlan();
+      };
+
+      loadPlans();
+  }, [planId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

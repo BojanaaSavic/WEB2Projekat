@@ -18,21 +18,26 @@ export default function Checklist() {
     description: '',
   });
 
-  useEffect(() => {
-    fetchChecklistItems();
-  }, [planId]);
 
-  const fetchChecklistItems = async () => {
-    setLoading(true);
-    try {
-      const data = await checklistService.getChecklistItems(planId);
-      setItems(data);
-    } catch (err) {
-      setError(err.message || 'Failed to fetch checklist items');
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchChecklistItems = async () => {
+        setLoading(true);
+        try {
+            const data = await checklistService.getChecklistItems(planId);
+            setItems(data);
+        } catch (err) {
+            setError(err.message || 'Failed to fetch checklist items');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+  useEffect(() => {
+      const loadPlans = async () => {
+          await fetchChecklistItems();
+      };
+
+      loadPlans();
+  }, [planId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;

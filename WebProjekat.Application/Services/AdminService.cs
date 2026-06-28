@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.ServiceFabric.Services.Client;
+using Microsoft.ServiceFabric.Services.Remoting.Client;
 using WebProjekat.Application.DTOs;
 using WebProjekat.Application.Interfaces;
 using WebProjekat.Infrastructure.Persistence;
@@ -45,6 +47,18 @@ namespace WebProjekat.Application.Services
         {
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
             if (user == null) return false;
+
+            try
+            {
+                var travelPlanService = ServiceProxy.Create<ITravelPlanRemotingService>(
+                    new Uri("fabric:/WebProjekat/TravelPlanRemotingService"),
+                    new ServicePartitionKey());
+                await travelPlanService.DeletePlansByOwnerAsync(userId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: Could not delete travel plans via remoting: {ex.Message}");
+            }
 
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();

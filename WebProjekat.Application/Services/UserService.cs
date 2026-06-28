@@ -16,11 +16,11 @@ namespace WebProjekat.Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly ApplicationDbContext _context;
+        private readonly UserDbContext _context;
         private readonly IConfiguration _configuration;
         private readonly PasswordHasher<User> _hasher = new();
 
-        public UserService(ApplicationDbContext context, IConfiguration configuration)
+        public UserService(UserDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;

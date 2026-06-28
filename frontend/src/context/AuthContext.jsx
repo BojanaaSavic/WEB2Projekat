@@ -1,66 +1,63 @@
-import React, { createContext, useState, useCallback, useEffect } from 'react';
+import { createContext, useState, useCallback } from 'react';
 
 export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const [user, setUser] = useState(() => {
+        const storedUser = localStorage.getItem('authUser');
+        return storedUser ? JSON.parse(storedUser) : null;
+    });
 
-  // Initialize from localStorage on mount
-  useEffect(() => {
-    const storedToken = localStorage.getItem('authToken');
-    const storedUser = localStorage.getItem('authUser');
-    
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
-  }, []);
+    const [token, setToken] = useState(() => {
+        return localStorage.getItem('authToken');
+    });
 
-  const login = useCallback((userData, authToken) => {
-    setUser(userData);
-    setToken(authToken);
-    localStorage.setItem('authToken', authToken);
-    localStorage.setItem('authUser', JSON.stringify(userData));
-    setError(null);
-  }, []);
+    const [loading] = useState(false);
+    const [error, setError] = useState(null);
 
-  const register = useCallback((userData, authToken) => {
-    setUser(userData);
-    setToken(authToken);
-    localStorage.setItem('authToken', authToken);
-    localStorage.setItem('authUser', JSON.stringify(userData));
-    setError(null);
-  }, []);
+    const login = useCallback((userData, authToken) => {
+        setUser(userData);
+        setToken(authToken);
+        localStorage.setItem('authToken', authToken);
+        localStorage.setItem('authUser', JSON.stringify(userData));
+        setError(null);
+    }, []);
 
-  const logout = useCallback(() => {
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('authUser');
-    setError(null);
-  }, []);
+    const register = useCallback((userData, authToken) => {
+        setUser(userData);
+        setToken(authToken);
+        localStorage.setItem('authToken', authToken);
+        localStorage.setItem('authUser', JSON.stringify(userData));
+        setError(null);
+    }, []);
 
-  const setAuthError = useCallback((err) => {
-    setError(err);
-  }, []);
+    const logout = useCallback(() => {
+        setUser(null);
+        setToken(null);
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('authUser');
+        setError(null);
+    }, []);
 
-  return (
-    <AuthContext.Provider value={{
-      user,
-      token,
-      loading,
-      error,
-      login,
-      register,
-      logout,
-      setAuthError,
-      isAuthenticated: !!token,
-    }}>
-      {children}
-    </AuthContext.Provider>
-  );
+    const setAuthError = useCallback((err) => {
+        setError(err);
+    }, []);
+
+    return (
+        <AuthContext.Provider
+            value={{
+                user,
+                token,
+                loading,
+                error,
+                login,
+                register,
+                logout,
+                setAuthError,
+                isAuthenticated: !!token,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
 }

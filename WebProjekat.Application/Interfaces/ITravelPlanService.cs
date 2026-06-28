@@ -40,5 +40,10 @@ namespace WebProjekat.Application.Interfaces
         Task<bool> DeleteSharedTokenAsync(Guid planId, Guid tokenId, Guid ownerId);
 
         Task<IEnumerable<ActivityCalendarDayDTO>> GetActivitiesCalendarAsync(Guid planId, Guid ownerId);
+
+        // Admin
+        Task<IEnumerable<AdminTravelPlanDTO>> GetAllPlansAdminAsync();
+        Task<bool> DeletePlanAdminAsync(Guid planId);
+        Task<AdminStatisticsDTO> GetAdminStatisticsAsync();
     }
 }

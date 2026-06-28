@@ -448,8 +448,92 @@ namespace WebProjekat.Application.Services
 
             return grouped;
         }
+
+        public async Task<IEnumerable<AdminTravelPlanDTO>> GetAllPlansAdminAsync()
+        {
+            var plans = await _context.TravelPlans
+                .Include(p => p.Destinations)
+                .Include(p => p.Activities)
+                .Include(p => p.ChecklistItems)
+                .ToListAsync();
+
+            return plans.Select(p => new AdminTravelPlanDTO
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                StartDate = p.StartDate,
+                EndDate = p.EndDate,
+                PlannedBudget = p.PlannedBudget,
+                OwnerName = p.OwnerId.ToString(), // OwnerId jer nemamo pristup UserService bazi
+                OwnerEmail = "",
+                CreatedAt = p.CreatedAt
+            }).ToList();
+        }
+
+        public async Task<bool> DeletePlanAdminAsync(Guid planId)
+        {
+            var plan = await _context.TravelPlans
+                .FirstOrDefaultAsync(p => p.Id == planId);
+            if (plan == null) return false;
+
+            // Briši troškove iz ExpenseService via remoting
+            try
+            {
+                var expenseService = ServiceProxy.Create<IExpenseRemotingService>(
+                    new Uri("fabric:/WebProjekat/ExpenseService"),
+                    new ServicePartitionKey());
+                await expenseService.DeleteExpensesByPlanAsync(planId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: Could not delete expenses via remoting: {ex.Message}");
+            }
+
+            _context.TravelPlans.Remove(plan);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<AdminStatisticsDTO> GetAdminStatisticsAsync()
+        {
+            var totalPlans = await _context.TravelPlans.CountAsync();
+            var totalDestinations = await _context.Destinations.CountAsync();
+            var totalActivities = await _context.Activities.CountAsync();
+
+            decimal totalExpenses = 0;
+            try
+            {
+                var planIds = await _context.TravelPlans
+                    .Select(p => p.Id)
+                    .ToListAsync();
+
+                var expenseService = ServiceProxy.Create<IExpenseRemotingService>(
+                    new Uri("fabric:/WebProjekat/ExpenseService"),
+                    new ServicePartitionKey());
+
+                foreach (var planId in planIds)
+                {
+                    totalExpenses += await expenseService.GetTotalExpensesForPlanAsync(planId);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: Could not fetch total expenses: {ex.Message}");
+            }
+
+            return new AdminStatisticsDTO
+            {
+                TotalPlans = totalPlans,
+                TotalDestinations = totalDestinations,
+                TotalActivities = totalActivities,
+                TotalExpenses = totalExpenses
+            };
+        }
         private TravelPlanDTO MapToDto(TravelPlan p)
         {
+            var activityCosts = p.Activities?.Sum(a => a.EstimatedCost) ?? 0;
+
             return new TravelPlanDTO
             {
                 Id = p.Id,
@@ -460,8 +544,8 @@ namespace WebProjekat.Application.Services
                 PlannedBudget = p.PlannedBudget,
                 Notes = p.Notes,
                 OwnerId = p.OwnerId,
-                TotalExpenses = 0,
-                RemainingBudget = p.PlannedBudget,
+                TotalExpenses = activityCosts, 
+                RemainingBudget = p.PlannedBudget - activityCosts,
                 Destinations = p.Destinations?.Select(d => new DestinationDTO
                 {
                     Id = d.Id,

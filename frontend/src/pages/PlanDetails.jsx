@@ -7,28 +7,32 @@ import '../styles/PlanDetails.css';
 export default function PlanDetails() {
   const { planId } = useParams();
   const navigate = useNavigate();
-  const { currentPlan, selectPlan } = useContext(TravelPlanContext);
+  const { selectPlan } = useContext(TravelPlanContext);
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [activeTab, setActiveTab] = useState('overview');
 
-  useEffect(() => {
-    fetchPlan();
-  }, [planId]);
+    const fetchPlan = async () => {
+        setLoading(true);
+        try {
+            const fetchedPlan = await travelPlanService.getPlan(planId);
+            setPlan(fetchedPlan);
+            selectPlan(fetchedPlan);
+        } catch (err) {
+            setError(err.message || 'Failed to fetch travel plan');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const fetchPlan = async () => {
-    setLoading(true);
-    try {
-      const fetchedPlan = await travelPlanService.getPlan(planId);
-      setPlan(fetchedPlan);
-      selectPlan(fetchedPlan);
-    } catch (err) {
-      setError(err.message || 'Failed to fetch travel plan');
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+      const loadPlans = async () => {
+          await fetchPlan();
+      };
+
+      loadPlans();
+  }, [planId]);
 
   const handleDeletePlan = async () => {
     if (window.confirm('Are you sure you want to delete this travel plan? This action cannot be undone.')) {

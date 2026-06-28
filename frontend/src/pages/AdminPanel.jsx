@@ -13,55 +13,78 @@ export default function AdminPanel() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    if (!user || user.role !== 'Admin') {
-      navigate('/dashboard');
-      return;
-    }
-    fetchStatistics();
-  }, [user]);
+    const fetchUsers = async () => {
+        setLoading(true);
+        try {
+            const res = await api.get('/api/admin/users');
+            setUsers(res.data);
+        } catch {
+            setError('Failed to load users.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  useEffect(() => {
-    if (activeTab === 'statistics') fetchStatistics();
-    if (activeTab === 'users') fetchUsers();
-    if (activeTab === 'plans') fetchPlans();
-  }, [activeTab]);
+    const fetchPlans = async () => {
+        setLoading(true);
+        try {
+            const res = await api.get('/api/admin/travelplans');
+            setPlans(res.data);
+        } catch {
+            setError('Failed to load plans.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const fetchStatistics = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get('/api/admin/statistics');
-      setStatistics(res.data);
-    } catch {
-      setError('Failed to load statistics.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    const fetchStatistics = async () => {
+        setLoading(true);
+        try {
+            const [planStats, userStats] = await Promise.all([
+                api.get('/api/admin/statistics'),
+                api.get('/api/admin/statistics/users')
+            ]);
+            setStatistics({
+                ...planStats.data,
+                totalUsers: userStats.data.totalUsers
+            });
+        } catch {
+            setError('Failed to load statistics.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const fetchUsers = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get('/api/admin/users');
-      setUsers(res.data);
-    } catch {
-      setError('Failed to load users.');
-    } finally {
-      setLoading(false);
-    }
-  };
+    useEffect(() => {
+        const loadData = async () => {
+            if (activeTab === 'statistics') {
+                await fetchStatistics();
+            }
 
-  const fetchPlans = async () => {
-    setLoading(true);
-    try {
-      const res = await api.get('/api/admin/travelplans');
-      setPlans(res.data);
-    } catch {
-      setError('Failed to load plans.');
-    } finally {
-      setLoading(false);
-    }
-  };
+            if (activeTab === 'users') {
+                await fetchUsers();
+            }
+
+            if (activeTab === 'plans') {
+                await fetchPlans();
+            }
+        };
+
+        loadData();
+    }, [activeTab]);
+
+    useEffect(() => {
+        if (!user || user.role !== 'Admin') {
+            navigate('/dashboard');
+            return;
+        }
+
+        const loadStatistics = async () => {
+            await fetchStatistics();
+        };
+
+        loadStatistics();
+    }, [user, navigate]);
 
   const handleDeleteUser = async (userId) => {
     if (!window.confirm('Delete this user and all their data?')) return;

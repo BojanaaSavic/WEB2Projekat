@@ -12,21 +12,25 @@ export default function Sharing() {
   const [accessType, setAccessType] = useState(AccessType.VIEW);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    fetchSharedTokens();
-  }, [planId]);
+    const fetchSharedTokens = async () => {
+        setLoading(true);
+        try {
+            const tokens = await sharingService.getSharedTokens(planId);
+            setSharedTokens(tokens);
+        } catch (err) {
+            setError(err.message || 'Failed to fetch shared tokens');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  const fetchSharedTokens = async () => {
-    setLoading(true);
-    try {
-      const tokens = await sharingService.getSharedTokens(planId);
-      setSharedTokens(tokens);
-    } catch (err) {
-      setError(err.message || 'Failed to fetch shared tokens');
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+      const loadPlans = async () => {
+          await fetchSharedTokens();
+      };
+
+      loadPlans();
+  }, [planId]);
 
   const handleCreateToken = async () => {
     setError('');
@@ -67,7 +71,7 @@ export default function Sharing() {
       a.download = `qr-code-${token.token}.png`;
       a.click();
     } catch (err) {
-      setError('Failed to generate QR code');
+      setError('Failed to generate QR code', err);
     }
   };
 
