@@ -12,8 +12,6 @@ namespace WebProjekat.Domain.Entities
         public DateTime Date { get; private set; }
         public string Description { get; private set; }
 
-        public TravelPlan TravelPlan { get; private set; }
-
         private Expense() { }
 
         public Expense(Guid travelPlanId, string name, string category, decimal amount, DateTime date, string description)

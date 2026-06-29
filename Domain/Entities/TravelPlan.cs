@@ -18,10 +18,8 @@ namespace WebProjekat.Domain.Entities
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
 
         // Navigation
-        public User Owner { get; private set; }
         public ICollection<Destination> Destinations { get; private set; } = new List<Destination>();
         public ICollection<Activity> Activities { get; private set; } = new List<Activity>();
-        public ICollection<Expense> Expenses { get; private set; } = new List<Expense>();
         public ICollection<ChecklistItem> ChecklistItems { get; private set; } = new List<ChecklistItem>();
         public ICollection<SharedPlanToken> SharedTokens { get; private set; } = new List<SharedPlanToken>();
 
@@ -51,7 +49,7 @@ namespace WebProjekat.Domain.Entities
 
         public void AddDestination(Destination d) => Destinations.Add(d);
         public void AddActivity(Activity a) => Activities.Add(a);
-        public void AddExpense(Expense e) => Expenses.Add(e);
+        //public void AddExpense(Expense e) => Expenses.Add(e);
         public void AddChecklistItem(ChecklistItem c) => ChecklistItems.Add(c);
         public void AddSharedToken(SharedPlanToken t) => SharedTokens.Add(t);
     }

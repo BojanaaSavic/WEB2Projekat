@@ -1,7 +1,7 @@
 // Shared Plan Token model for sharing with QR code
 export const AccessType = {
-  VIEW: 'VIEW',
-  EDIT: 'EDIT',
+  VIEW: 'View',
+  EDIT: 'Edit',
 };
 
 export class SharedPlanToken {

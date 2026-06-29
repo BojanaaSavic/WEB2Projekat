@@ -123,7 +123,7 @@ namespace WebProjekat.Application.Services
                     .ThenInclude(p => p.Activities)
                 .Include(s => s.TravelPlan)
                     .ThenInclude(p => p.ChecklistItems)
-                .FirstOrDefaultAsync(s => s.Token == token && s.IsValid());
+                .FirstOrDefaultAsync(s => s.Token == token && s.ExpiresAt >= DateTime.UtcNow);
 
             if (shared == null) return (null, null);
 
@@ -137,7 +137,7 @@ namespace WebProjekat.Application.Services
             if (plan == null) return null;
 
             var tokens = await _context.SharedPlanTokens
-                .Where(t => t.TravelPlanId == planId && t.IsValid())
+                .Where(t => t.TravelPlanId == planId && t.ExpiresAt >= DateTime.UtcNow)
                 .ToListAsync();
 
             return tokens.Select(t => new SharedTokenDTO

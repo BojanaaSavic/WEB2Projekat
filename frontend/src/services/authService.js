@@ -33,9 +33,9 @@ export const authService = {
     }
   },
 
-  // Logout (client-side only, just clear localStorage)
+  // Logout (client-side only, just clear sessionStorage)
   logout: () => {
-    localStorage.removeItem('authToken');
-    localStorage.removeItem('authUser');
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('authUser');
   },
 };

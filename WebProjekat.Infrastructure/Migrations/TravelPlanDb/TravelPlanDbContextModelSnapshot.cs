@@ -127,40 +127,6 @@ namespace WebProjekat.Infrastructure.Migrations.TravelPlanDb
                     b.ToTable("Destinations");
                 });
 
-            modelBuilder.Entity("WebProjekat.Domain.Entities.Expense", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("TravelPlanId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TravelPlanId");
-
-                    b.ToTable("Expense");
-                });
-
             modelBuilder.Entity("WebProjekat.Domain.Entities.SharedPlanToken", b =>
                 {
                     b.Property<Guid>("Id")
@@ -228,36 +194,7 @@ namespace WebProjekat.Infrastructure.Migrations.TravelPlanDb
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerId");
-
                     b.ToTable("TravelPlans");
-                });
-
-            modelBuilder.Entity("WebProjekat.Domain.Entities.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("WebProjekat.Domain.Entities.Activity", b =>
@@ -293,17 +230,6 @@ namespace WebProjekat.Infrastructure.Migrations.TravelPlanDb
                     b.Navigation("TravelPlan");
                 });
 
-            modelBuilder.Entity("WebProjekat.Domain.Entities.Expense", b =>
-                {
-                    b.HasOne("WebProjekat.Domain.Entities.TravelPlan", "TravelPlan")
-                        .WithMany("Expenses")
-                        .HasForeignKey("TravelPlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TravelPlan");
-                });
-
             modelBuilder.Entity("WebProjekat.Domain.Entities.SharedPlanToken", b =>
                 {
                     b.HasOne("WebProjekat.Domain.Entities.TravelPlan", "TravelPlan")
@@ -317,31 +243,13 @@ namespace WebProjekat.Infrastructure.Migrations.TravelPlanDb
 
             modelBuilder.Entity("WebProjekat.Domain.Entities.TravelPlan", b =>
                 {
-                    b.HasOne("WebProjekat.Domain.Entities.User", "Owner")
-                        .WithMany("TravelPlans")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-                });
-
-            modelBuilder.Entity("WebProjekat.Domain.Entities.TravelPlan", b =>
-                {
                     b.Navigation("Activities");
 
                     b.Navigation("ChecklistItems");
 
                     b.Navigation("Destinations");
 
-                    b.Navigation("Expenses");
-
                     b.Navigation("SharedTokens");
-                });
-
-            modelBuilder.Entity("WebProjekat.Domain.Entities.User", b =>
-                {
-                    b.Navigation("TravelPlans");
                 });
 #pragma warning restore 612, 618
         }

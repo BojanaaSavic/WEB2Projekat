@@ -4,12 +4,12 @@ export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState(() => {
-        const storedUser = localStorage.getItem('authUser');
+        const storedUser = sessionStorage.getItem('authUser');
         return storedUser ? JSON.parse(storedUser) : null;
     });
 
     const [token, setToken] = useState(() => {
-        return localStorage.getItem('authToken');
+        return sessionStorage.getItem('authToken');
     });
 
     const [loading] = useState(false);
@@ -18,24 +18,24 @@ export function AuthProvider({ children }) {
     const login = useCallback((userData, authToken) => {
         setUser(userData);
         setToken(authToken);
-        localStorage.setItem('authToken', authToken);
-        localStorage.setItem('authUser', JSON.stringify(userData));
+        sessionStorage.setItem('authToken', authToken);
+        sessionStorage.setItem('authUser', JSON.stringify(userData));
         setError(null);
     }, []);
 
     const register = useCallback((userData, authToken) => {
         setUser(userData);
         setToken(authToken);
-        localStorage.setItem('authToken', authToken);
-        localStorage.setItem('authUser', JSON.stringify(userData));
+        sessionStorage.setItem('authToken', authToken);
+        sessionStorage.setItem('authUser', JSON.stringify(userData));
         setError(null);
     }, []);
 
     const logout = useCallback(() => {
         setUser(null);
         setToken(null);
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('authUser');
+        sessionStorage.removeItem('authToken');
+        sessionStorage.removeItem('authUser');
         setError(null);
     }, []);
 

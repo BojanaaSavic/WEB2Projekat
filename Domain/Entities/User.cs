@@ -11,9 +11,6 @@ namespace WebProjekat.Domain.Entities
         public string Password { get; private set; }
         public string Role { get; private set; }
 
-        // Navigation
-        public ICollection<TravelPlan> TravelPlans { get; private set; } = new List<TravelPlan>();
-
         private User() { }
 
         public User(string name, string email, string password, string role = "User")
