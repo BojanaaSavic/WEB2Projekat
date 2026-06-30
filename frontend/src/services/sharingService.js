@@ -5,7 +5,7 @@ export const sharingService = {
   // Create shared token for plan
     createSharedToken: async (planId, createRequest) => {
         try {
-            const accessParam = createRequest.accessType === 'EDIT' ? 'Edit' : 'View';
+            const accessParam = createRequest.accessType === 'Edit' ? 'Edit' : 'View';
             const response = await api.post(`/api/travelplans/${planId}/share?access=${accessParam}&validDays=7`);
             const t = response.data;
             return new SharedPlanToken(

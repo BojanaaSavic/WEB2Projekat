@@ -122,6 +122,59 @@
   gap: 15px;
 }
 
+.activity-card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.activity-header h4 {
+    margin: 0;
+    margin-right: 10px;
+    font-size: 28px;
+}
+
+.activity-date,
+.activity-location,
+.activity-description,
+.activity-cost {
+    margin: 0;
+}
+
+.activity-date {
+    color: #666;
+}
+
+.activity-location {
+    color: #444;
+}
+
+.activity-description {
+    color: #666;
+    line-height: 1.4;
+}
+
+.activity-cost {
+    color: #4CAF50;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.activity-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
 @media (max-width: 768px) {
   .calendar-grid {
     grid-template-columns: repeat(7, 1fr);

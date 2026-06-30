@@ -90,7 +90,7 @@ export default function Expenses() {
             name: expense.name,
             category: expense.category,
             amount: expense.amount,
-            date: expense.date,
+            date: expense.date.split('T')[0],
             description: expense.description,
         });
         setEditingId(expense.id);

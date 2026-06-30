@@ -54,6 +54,16 @@ export default function Destinations() {
     e.preventDefault();
     setError('');
 
+    if (formData.arrivalDate < new Date().toISOString().split('T')[0]) {
+        setError('Arrival date cannot be in the past.');
+        return;
+    }
+
+    if (formData.departureDate < formData.arrivalDate) {
+        setError('Departure date cannot be before arrival date.');
+        return;
+    }
+
     try {
       if (editingId) {
         const updateRequest = new UpdateDestinationRequest(
@@ -90,8 +100,8 @@ export default function Destinations() {
     setFormData({
       name: destination.name,
       location: destination.location,
-      arrivalDate: destination.arrivalDate,
-      departureDate: destination.departureDate,
+      arrivalDate: destination.arrivalDate.split('T')[0],
+      departureDate: destination.departureDate.split('T')[0],
       description: destination.description,
     });
     setEditingId(destination.id);

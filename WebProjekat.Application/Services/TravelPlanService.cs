@@ -36,7 +36,7 @@ namespace WebProjekat.Application.Services
             }
             await _context.SaveChangesAsync();
 
-            return MapToDto(plan);
+            return await MapToDtoAsync(plan);
         }
 
         public async Task<IEnumerable<TravelPlanDTO>> GetAllForUserAsync(Guid ownerId)
@@ -48,7 +48,8 @@ namespace WebProjekat.Application.Services
                 .Include(p => p.ChecklistItems)
                 .ToListAsync();
 
-            return plans.Select(MapToDto);
+            var dtos = await Task.WhenAll(plans.Select(MapToDtoAsync));
+            return dtos;
         }
 
         public async Task<TravelPlanDTO> GetByIdAsync(Guid id, Guid ownerId)
@@ -61,7 +62,7 @@ namespace WebProjekat.Application.Services
 
             if (plan == null) return null;
 
-            return MapToDto(plan);
+            return await MapToDtoAsync(plan);
         }
 
         public async Task<TravelPlanDTO> UpdateAsync(Guid id, CreateTravelPlanDTO dto, Guid ownerId)
@@ -72,7 +73,7 @@ namespace WebProjekat.Application.Services
             plan.Update(dto.Name, dto.Description, dto.StartDate, dto.EndDate, dto.PlannedBudget, dto.Notes, ownerId);
             _context.TravelPlans.Update(plan);
             await _context.SaveChangesAsync();
-            return MapToDto(plan);
+            return await MapToDtoAsync(plan);
         }
 
 
@@ -127,7 +128,7 @@ namespace WebProjekat.Application.Services
 
             if (shared == null) return (null, null);
 
-            return (MapToDto(shared.TravelPlan), shared.AccessLevel.ToString());
+            return (await MapToDtoAsync(shared.TravelPlan), shared.AccessLevel.ToString());
         }
 
         public async Task<IEnumerable<SharedTokenDTO>> GetSharedTokensAsync(Guid planId, Guid ownerId)
@@ -530,9 +531,24 @@ namespace WebProjekat.Application.Services
                 TotalExpenses = totalExpenses
             };
         }
-        private TravelPlanDTO MapToDto(TravelPlan p)
+        private async Task<TravelPlanDTO> MapToDtoAsync(TravelPlan p)
         {
             var activityCosts = p.Activities?.Sum(a => a.EstimatedCost) ?? 0;
+
+            decimal expenseTotal = 0;
+            try
+            {
+                var expenseService = ServiceProxy.Create<IExpenseRemotingService>(
+                    new Uri("fabric:/WebProjekat/ExpenseService"),
+                    new ServicePartitionKey());
+                expenseTotal = await expenseService.GetTotalExpensesForPlanAsync(p.Id);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: Could not fetch expenses for plan {p.Id}: {ex.Message}");
+            }
+
+            var totalSpent = activityCosts + expenseTotal;
 
             return new TravelPlanDTO
             {
@@ -544,8 +560,8 @@ namespace WebProjekat.Application.Services
                 PlannedBudget = p.PlannedBudget,
                 Notes = p.Notes,
                 OwnerId = p.OwnerId,
-                TotalExpenses = activityCosts, 
-                RemainingBudget = p.PlannedBudget - activityCosts,
+                TotalExpenses = totalSpent,
+                RemainingBudget = p.PlannedBudget - totalSpent,
                 Destinations = p.Destinations?.Select(d => new DestinationDTO
                 {
                     Id = d.Id,

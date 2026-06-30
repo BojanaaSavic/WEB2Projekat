@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { TravelPlanContext } from '../context/TravelPlanContext';
 import { travelPlanService } from '../services/travelPlanService';
 import '../styles/PlanDetails.css';
+import { exportPlanToPdf } from '../services/pdfExportService';
 
 export default function PlanDetails() {
   const { planId } = useParams();
@@ -43,7 +44,15 @@ export default function PlanDetails() {
         setError(err.message || 'Failed to delete travel plan');
       }
     }
-  };
+    };
+
+    const handleExportPdf = () => {
+        try {
+            exportPlanToPdf(plan);
+        } catch (err) {
+            setError('Greška pri generisanju PDF-a.', err);
+        }
+    };
 
   if (loading) {
     return <div className="loading">Loading travel plan...</div>;
@@ -65,6 +74,7 @@ export default function PlanDetails() {
           <p className="plan-description">{plan.description}</p>
         </div>
         <div className="plan-actions">
+          <button className="btn-secondary" onClick={handleExportPdf}>Export PDF</button>
           <Link to={`/plan/${planId}/edit`} className="btn-secondary">Edit</Link>
           <button className="btn-danger" onClick={handleDeletePlan}>Delete</button>
         </div>

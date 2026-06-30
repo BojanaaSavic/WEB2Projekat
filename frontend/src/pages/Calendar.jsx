@@ -100,6 +100,8 @@ export default function Calendar() {
     });
     setEditingId(activity.id);
     setShowForm(true);
+
+    window.scrollTo({top: 0, behavior: 'smooth'});
   };
 
   const handleDelete = async (activityId) => {
@@ -266,7 +268,16 @@ export default function Calendar() {
                   <div className="day-activities">
                     {getActivitiesByDate(day).slice(0, 2).map(activity => (
                       <div key={activity.id} className={`activity-badge status-${activity.status.toLowerCase()}`}>
-                        {activity.name.substring(0, 10)}...
+                        <p className="activity-time">
+                          {new Date(activity.scheduledAt).toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </p>
+
+                        <p className="activity-name">
+                          {activity.name.length > 10 ? `${activity.name.substring(0, 10)}...` : activity.name}
+                        </p>
                       </div>
                     ))}
                     {getActivitiesByDate(day).length > 2 && (
@@ -287,20 +298,35 @@ export default function Calendar() {
         ) : (
           <div className="activities-grid">
             {activities.sort((a, b) => new Date(a.scheduledAt) - new Date(b.scheduledAt)).map(activity => (
-              <div key={activity.id} className="activity-card">
+              <div className="activity-card">
                 <div className="activity-header">
-                  <h4>{activity.name}</h4>
-                  <span className={`status-badge status-${activity.status.toLowerCase()}`}>{activity.status}</span>
+                    <h4>{activity.name}</h4>
+                    <span className={`status-badge status-${activity.status.toLowerCase()}`}>{activity.status}</span>
                 </div>
-                <p className="activity-date">{new Date(activity.scheduledAt).toLocaleString()}</p>
-                {activity.location && <p className="activity-location">{activity.location}</p>}
-                {activity.description && <p className="activity-description">{activity.description}</p>}
-                {activity.estimatedCost > 0 && <p className="activity-cost">Cost: ${activity.estimatedCost.toFixed(2)}</p>}
+
+                <div className="activity-meta">
+                    <p>{new Date(activity.scheduledAt).toLocaleString()}</p>
+                    {activity.location && <p>{activity.location}</p>}
+                </div>
+
+                {activity.description && (
+                    <p className="activity-description">{activity.description}</p>
+                )}
+
+                {activity.estimatedCost > 0 && (
+                    <p className="activity-cost">${activity.estimatedCost.toFixed(2)}</p>
+                )}
+
                 <div className="activity-actions">
-                  <button className="btn-secondary" onClick={() => handleEdit(activity)}>Edit</button>
-                  <button className="btn-danger" onClick={() => handleDelete(activity.id)}>Delete</button>
+                    <button className="btn-secondary" onClick={() => handleEdit(activity)}>
+                        Edit
+                    </button>
+
+                    <button className="btn-danger" onClick={() => handleDelete(activity.id)}>
+                        Delete
+                    </button>
                 </div>
-              </div>
+            </div>
             ))}
           </div>
         )}
