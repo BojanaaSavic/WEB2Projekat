@@ -45,5 +45,6 @@ namespace WebProjekat.Application.Interfaces
         Task<IEnumerable<AdminTravelPlanDTO>> GetAllPlansAdminAsync();
         Task<bool> DeletePlanAdminAsync(Guid planId);
         Task<AdminStatisticsDTO> GetAdminStatisticsAsync();
+        Task DeletePlansByOwnerAsync(Guid ownerId);
     }
 }

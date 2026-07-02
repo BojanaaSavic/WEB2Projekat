@@ -4,7 +4,7 @@ import { Expense } from '../models/Expense';
 export const expenseService = {
     getExpenses: async (planId) => {
         try {
-            const response = await api.get(`/api/travel-plans/${planId}/expenses`);
+            const response = await api.get(`/api/travelplans/${planId}/expenses`);
             return response.data.map(e => new Expense(
                 e.id, e.travelPlanId, e.name, e.category, e.amount, e.date, e.description
             ));
@@ -15,7 +15,7 @@ export const expenseService = {
 
     getExpense: async (planId, expenseId) => {
         try {
-            const response = await api.get(`/api/travel-plans/${planId}/expenses/${expenseId}`);
+            const response = await api.get(`/api/travelplans/${planId}/expenses/${expenseId}`);
             const e = response.data;
             return new Expense(e.id, e.travelPlanId, e.name, e.category, e.amount, e.date, e.description);
         } catch (error) {
@@ -25,7 +25,7 @@ export const expenseService = {
 
     createExpense: async (planId, createRequest) => {
         try {
-            const response = await api.post(`/api/travel-plans/${planId}/expenses`, createRequest);
+            const response = await api.post(`/api/travelplans/${planId}/expenses`, createRequest);
             const e = response.data;
             return new Expense(e.id, e.travelPlanId, e.name, e.category, e.amount, e.date, e.description);
         } catch (error) {
@@ -35,7 +35,7 @@ export const expenseService = {
 
     updateExpense: async (planId, expenseId, updateRequest) => {
         try {
-            const response = await api.put(`/api/travel-plans/${planId}/expenses/${expenseId}`, updateRequest);
+            const response = await api.put(`/api/travelplans/${planId}/expenses/${expenseId}`, updateRequest);
             const e = response.data;
             return new Expense(e.id, e.travelPlanId, e.name, e.category, e.amount, e.date, e.description);
         } catch (error) {
@@ -45,7 +45,7 @@ export const expenseService = {
 
     deleteExpense: async (planId, expenseId) => {
         try {
-            await api.delete(`/api/travel-plans/${planId}/expenses/${expenseId}`);
+            await api.delete(`/api/travelplans/${planId}/expenses/${expenseId}`);
         } catch (error) {
             throw error.response?.data?.message || 'Failed to delete expense';
         }
@@ -53,7 +53,7 @@ export const expenseService = {
 
     getTotalExpenses: async (planId) => {
         try {
-            const response = await api.get(`/api/travel-plans/${planId}/expenses/total`);
+            const response = await api.get(`/api/travelplans/${planId}/expenses/total`);
             return response.data;
         } catch (error) {
             throw error.response?.data?.message || 'Failed to fetch total expenses';
@@ -62,7 +62,7 @@ export const expenseService = {
 
     getExpensesByCategory: async (planId) => {
         try {
-            const response = await api.get(`/api/travel-plans/${planId}/expenses/by-category`);
+            const response = await api.get(`/api/travelplans/${planId}/expenses/by-category`);
             return response.data;
         } catch (error) {
             throw error.response?.data?.message || 'Failed to fetch expenses by category';

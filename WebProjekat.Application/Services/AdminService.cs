@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.ServiceFabric.Services.Client;
-using Microsoft.ServiceFabric.Services.Remoting.Client;
 using WebProjekat.Application.DTOs;
 using WebProjekat.Application.Interfaces;
 using WebProjekat.Infrastructure.Persistence;
@@ -10,10 +8,12 @@ namespace WebProjekat.Application.Services
     public class AdminService : IAdminService
     {
         private readonly UserDbContext _context;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public AdminService(UserDbContext context)
+        public AdminService(UserDbContext context, IHttpClientFactory httpClientFactory)
         {
             _context = context;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<IEnumerable<AdminUserDTO>> GetAllUsersAsync()
@@ -50,14 +50,12 @@ namespace WebProjekat.Application.Services
 
             try
             {
-                var travelPlanService = ServiceProxy.Create<ITravelPlanRemotingService>(
-                    new Uri("fabric:/WebProjekat/TravelPlanRemotingService"),
-                    new ServicePartitionKey());
-                await travelPlanService.DeletePlansByOwnerAsync(userId);
+                var client = _httpClientFactory.CreateClient("Gateway");
+                await client.DeleteAsync($"api/admin/travelplans/owner/{userId}");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Warning: Could not delete travel plans via remoting: {ex.Message}");
+                Console.WriteLine($"Warning: Could not delete travel plans via gateway: {ex}");
             }
 
             _context.Users.Remove(user);

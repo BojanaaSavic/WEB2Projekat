@@ -104,6 +104,16 @@ namespace WebProjekat.Application.Services
             return true;
         }
 
+        public async Task RemoveAllExpensesForPlanAsync(Guid planId)
+        {
+            var expenses = await _context.Expenses
+                .Where(e => e.TravelPlanId == planId)
+                .ToListAsync();
+
+            _context.Expenses.RemoveRange(expenses);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<decimal> GetTotalExpensesAsync(Guid planId)
         {
             return await _context.Expenses

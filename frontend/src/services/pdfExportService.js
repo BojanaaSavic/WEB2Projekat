@@ -189,6 +189,6 @@ export function exportPlanToPdf(plan) {
   y = addChecklist(doc, plan.checklistItems, y);
   addFooter(doc);
 
-  const fileName = `${(plan.name || 'travel-plan').replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`;
+  const fileName = `${(plan.name || 'travelplan').replace(/[^a-z0-9]/gi, '_').toLowerCase()}.pdf`;
   doc.save(fileName);
 }

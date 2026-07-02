@@ -14,5 +14,6 @@ namespace WebProjekat.Application.Interfaces
         Task<bool> RemoveExpenseAsync(Guid planId, Guid expenseId);
         Task<decimal> GetTotalExpensesAsync(Guid planId);
         Task<IEnumerable<ExpenseCategoryDTO>> GetExpensesByCategoryAsync(Guid planId);
+        Task RemoveAllExpensesForPlanAsync(Guid planId);
     }
 }

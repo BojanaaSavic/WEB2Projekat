@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.ServiceFabric.Services.Client;
-using Microsoft.ServiceFabric.Services.Remoting.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using WebProjekat.Application.DTOs;
 using WebProjekat.Application.Interfaces;
@@ -15,10 +15,12 @@ namespace WebProjekat.Application.Services
     public class TravelPlanService : ITravelPlanService
     {
         private readonly TravelPlanDbContext _context;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public TravelPlanService(TravelPlanDbContext context)
+        public TravelPlanService(TravelPlanDbContext context, IHttpClientFactory httpClientFactory)
         {
             _context = context;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<TravelPlanDTO> CreateAsync(CreateTravelPlanDTO dto, Guid ownerId)
@@ -28,12 +30,6 @@ namespace WebProjekat.Application.Services
 
             var plan = new TravelPlan(dto.Name, dto.Description, dto.StartDate, dto.EndDate, dto.PlannedBudget, dto.Notes, ownerId);
             _context.TravelPlans.Add(plan);
-            foreach (var entry in _context.ChangeTracker.Entries())
-            {
-                Console.WriteLine(
-                    $"{entry.Entity.GetType().Name} - {entry.State}"
-                );
-            }
             await _context.SaveChangesAsync();
 
             return await MapToDtoAsync(plan);
@@ -76,30 +72,21 @@ namespace WebProjekat.Application.Services
             return await MapToDtoAsync(plan);
         }
 
-
-
         public async Task<bool> DeleteAsync(Guid id, Guid ownerId)
         {
             var plan = await _context.TravelPlans
                 .FirstOrDefaultAsync(p => p.Id == id && p.OwnerId == ownerId);
             if (plan == null) return false;
 
-            try
-            {
-                var expenseService = ServiceProxy.Create<IExpenseRemotingService>(
-                    new Uri("fabric:/WebProjekat/ExpenseService"),
-                    new ServicePartitionKey());
-                await expenseService.DeleteExpensesByPlanAsync(id);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Warning: Could not delete expenses via remoting: {ex.Message}");
-            }
+            await DeleteExpensesViaGateway(id);
 
             _context.TravelPlans.Remove(plan);
             await _context.SaveChangesAsync();
             return true;
         }
+
+        // ... (SharePlanAsync, GetByShareTokenAsync, GetSharedTokensAsync, DeleteSharedTokenAsync,
+        //      Destination i Activity i Checklist metode ostaju POTPUNO ISTE kao u tvom originalu — ne diramo ih)
 
         public async Task<string> SharePlanAsync(Guid id, Guid ownerId, string accessLevel, TimeSpan validFor)
         {
@@ -166,7 +153,6 @@ namespace WebProjekat.Application.Services
             return true;
         }
 
-        // Destination
         public async Task<DestinationDTO> AddDestinationAsync(Guid planId, DestinationDTO dto, Guid ownerId)
         {
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
@@ -188,7 +174,7 @@ namespace WebProjekat.Application.Services
             if (dest == null) return null;
 
             dest.Update(dto.Name, dto.Location, dto.ArrivalDate, dto.DepartureDate, dto.Description);
-            _context.Destinations.Update(dest); //posibly won't need check with db
+            _context.Destinations.Update(dest);
             await _context.SaveChangesAsync();
             return new DestinationDTO
             {
@@ -252,7 +238,6 @@ namespace WebProjekat.Application.Services
             }).ToList();
         }
 
-        // Activity
         public async Task<ActivityDTO> AddActivityAsync(Guid planId, ActivityDTO dto, Guid ownerId)
         {
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
@@ -341,7 +326,6 @@ namespace WebProjekat.Application.Services
             }).ToList();
         }
 
-        // Checklist
         public async Task<ChecklistItemDTO> AddChecklistItemAsync(Guid planId, ChecklistItemDTO dto, Guid ownerId)
         {
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);
@@ -466,7 +450,7 @@ namespace WebProjekat.Application.Services
                 StartDate = p.StartDate,
                 EndDate = p.EndDate,
                 PlannedBudget = p.PlannedBudget,
-                OwnerName = p.OwnerId.ToString(), // OwnerId jer nemamo pristup UserService bazi
+                OwnerName = p.OwnerId.ToString(),
                 OwnerEmail = "",
                 CreatedAt = p.CreatedAt
             }).ToList();
@@ -478,22 +462,26 @@ namespace WebProjekat.Application.Services
                 .FirstOrDefaultAsync(p => p.Id == planId);
             if (plan == null) return false;
 
-            // Briši troškove iz ExpenseService via remoting
-            try
-            {
-                var expenseService = ServiceProxy.Create<IExpenseRemotingService>(
-                    new Uri("fabric:/WebProjekat/ExpenseService"),
-                    new ServicePartitionKey());
-                await expenseService.DeleteExpensesByPlanAsync(planId);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Warning: Could not delete expenses via remoting: {ex.Message}");
-            }
+            await DeleteExpensesViaGateway(planId);
 
             _context.TravelPlans.Remove(plan);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task DeletePlansByOwnerAsync(Guid ownerId)
+        {
+            var plans = await _context.TravelPlans
+                .Where(p => p.OwnerId == ownerId)
+                .ToListAsync();
+
+            foreach (var plan in plans)
+            {
+                await DeleteExpensesViaGateway(plan.Id);
+            }
+
+            _context.TravelPlans.RemoveRange(plans);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<AdminStatisticsDTO> GetAdminStatisticsAsync()
@@ -509,18 +497,21 @@ namespace WebProjekat.Application.Services
                     .Select(p => p.Id)
                     .ToListAsync();
 
-                var expenseService = ServiceProxy.Create<IExpenseRemotingService>(
-                    new Uri("fabric:/WebProjekat/ExpenseService"),
-                    new ServicePartitionKey());
+                var client = _httpClientFactory.CreateClient("Gateway");
 
                 foreach (var planId in planIds)
                 {
-                    totalExpenses += await expenseService.GetTotalExpensesForPlanAsync(planId);
+                    var response = await client.GetAsync($"api/travelplans/{planId}/expenses/total");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var result = await response.Content.ReadFromJsonAsync<TotalExpenseResponse>();
+                        totalExpenses += result?.Total ?? 0;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Warning: Could not fetch total expenses: {ex.Message}");
+                Console.WriteLine($"Warning: Could not fetch total expenses: {ex}");
             }
 
             return new AdminStatisticsDTO
@@ -531,21 +522,32 @@ namespace WebProjekat.Application.Services
                 TotalExpenses = totalExpenses
             };
         }
+
         private async Task<TravelPlanDTO> MapToDtoAsync(TravelPlan p)
         {
             var activityCosts = p.Activities?.Sum(a => a.EstimatedCost) ?? 0;
 
             decimal expenseTotal = 0;
+            List<ExpenseDTO> planExpenses = new List<ExpenseDTO>();
             try
             {
-                var expenseService = ServiceProxy.Create<IExpenseRemotingService>(
-                    new Uri("fabric:/WebProjekat/ExpenseService"),
-                    new ServicePartitionKey());
-                expenseTotal = await expenseService.GetTotalExpensesForPlanAsync(p.Id);
+                var client = _httpClientFactory.CreateClient("Gateway");
+                var response = await client.GetAsync($"api/travelplans/{p.Id}/expenses");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    planExpenses = await response.Content.ReadFromJsonAsync<List<ExpenseDTO>>()
+                                   ?? new List<ExpenseDTO>();
+                    expenseTotal = planExpenses.Sum(e => e.Amount);
+                }
+                else
+                {
+                    Console.WriteLine($"Gateway/ExpenseService returned {response.StatusCode} for plan {p.Id}");
+                }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Warning: Could not fetch expenses for plan {p.Id}: {ex.Message}");
+                Console.WriteLine($"Warning: Could not fetch expenses for plan {p.Id}: {ex}");
             }
 
             var totalSpent = activityCosts + expenseTotal;
@@ -581,7 +583,7 @@ namespace WebProjekat.Application.Services
                     EstimatedCost = a.EstimatedCost,
                     Status = a.Status
                 }).ToList(),
-                Expenses = new List<ExpenseDTO>(),
+                Expenses = planExpenses,
                 ChecklistItems = p.ChecklistItems?.Select(c => new ChecklistItemDTO
                 {
                     Id = c.Id,
@@ -589,6 +591,25 @@ namespace WebProjekat.Application.Services
                     IsCompleted = c.IsCompleted
                 }).ToList()
             };
+        }
+
+        private async Task DeleteExpensesViaGateway(Guid planId)
+        {
+            try
+            {
+                var client = _httpClientFactory.CreateClient("Gateway");
+                await client.DeleteAsync($"api/travelplans/{planId}/expenses");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Warning: Could not delete expenses for plan {planId}: {ex}");
+            }
+        }
+
+        private class TotalExpenseResponse
+        {
+            public Guid PlanId { get; set; }
+            public decimal Total { get; set; }
         }
     }
 }
