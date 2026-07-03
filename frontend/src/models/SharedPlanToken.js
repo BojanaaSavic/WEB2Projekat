@@ -1,4 +1,3 @@
-// Shared Plan Token model for sharing with QR code
 export const AccessType = {
   VIEW: 'View',
   EDIT: 'Edit',

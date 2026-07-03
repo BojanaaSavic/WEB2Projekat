@@ -54,6 +54,26 @@ export default function Destinations() {
     e.preventDefault();
     setError('');
 
+    if (!formData.name.trim()) {
+      setError('Destination name is required.');
+      return;
+    }
+
+    if (!formData.location.trim()) {
+      setError('Location is required.');
+      return;
+    }
+
+    if (!formData.arrivalDate) {
+      setError('Arrival date is required.');
+      return;
+    }
+
+    if (!formData.departureDate) {
+      setError('Departure date is required.');
+      return;
+    }
+
     if (formData.arrivalDate < new Date().toISOString().split('T')[0]) {
         setError('Arrival date cannot be in the past.');
         return;

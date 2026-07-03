@@ -28,10 +28,17 @@ namespace WebProjekat.Application.Services
 
         public async Task<AuthResponseDTO> RegisterAsync(RegisterDTO dto)
         {
-            var existing = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
-            if (existing != null) throw new ArgumentException("Email already registered.");
+            if (!IsValidEmail(dto.Email))
+                throw new ArgumentException("Invalid email address format.");
 
-            // Create user with the plain password in domain, then immediately hash and set before persisting.
+            var existing = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            if (existing != null) 
+                throw new ArgumentException("Email already registered.");
+
+            var passwordValidation = ValidatePasswordStrength(dto.Password);
+            if (!passwordValidation.IsValid)
+                throw new ArgumentException(passwordValidation.ErrorMessage);
+
             var user = new User(dto.Name, dto.Email, dto.Password);
             var hashed = _hasher.HashPassword(user, dto.Password);
             user.SetPasswordHash(hashed);
@@ -48,12 +55,47 @@ namespace WebProjekat.Application.Services
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (user == null) return null;
 
-            // 'Password' on the entity stores the hashed password in the database.
             var result = _hasher.VerifyHashedPassword(user, user.Password, dto.Password);
             if (result == PasswordVerificationResult.Failed) return null;
 
             var token = GenerateToken(user);
             return new AuthResponseDTO { Token = token, UserId = user.Id, Email = user.Email, Name = user.Name, Role = user.Role };
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private (bool IsValid, string ErrorMessage) ValidatePasswordStrength(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+                return (false, "Password cannot be empty.");
+
+            if (password.Length < 8)
+                return (false, "Password must be at least 8 characters long.");
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(password, @"[a-z]"))
+                return (false, "Password must contain at least one lowercase letter.");
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(password, @"[A-Z]"))
+                return (false, "Password must contain at least one uppercase letter.");
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(password, @"\d"))
+                return (false, "Password must contain at least one digit.");
+
+            if (!System.Text.RegularExpressions.Regex.IsMatch(password, @"[@$!%*?&]"))
+                return (false, "Password must contain at least one special character (@$!%*?&).");
+
+            return (true, "");
         }
 
         private string GenerateToken(User user)

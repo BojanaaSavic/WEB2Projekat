@@ -85,9 +85,6 @@ namespace WebProjekat.Application.Services
             return true;
         }
 
-        // ... (SharePlanAsync, GetByShareTokenAsync, GetSharedTokensAsync, DeleteSharedTokenAsync,
-        //      Destination i Activity i Checklist metode ostaju POTPUNO ISTE kao u tvom originalu — ne diramo ih)
-
         public async Task<string> SharePlanAsync(Guid id, Guid ownerId, string accessLevel, TimeSpan validFor)
         {
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == id && p.OwnerId == ownerId);

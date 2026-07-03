@@ -51,6 +51,26 @@ export default function Checklist() {
     e.preventDefault();
     setError('');
 
+    if (!formData.title.trim()) {
+      setError('Checklist item title is required.');
+      return;
+    }
+
+    if (formData.title.trim().length < 2) {
+      setError('Title must be at least 2 characters long.');
+      return;
+    }
+
+    if (formData.title.length > 200) {
+      setError('Title cannot exceed 200 characters.');
+      return;
+    }
+
+    if (formData.description && formData.description.length > 500) {
+      setError('Description cannot exceed 500 characters.');
+      return;
+    }
+
     try {
       if (editingId) {
         const updateRequest = new UpdateChecklistItemRequest(

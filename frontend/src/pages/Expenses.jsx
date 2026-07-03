@@ -53,6 +53,22 @@ export default function Expenses() {
         e.preventDefault();
         setError('');
 
+        if (!formData.name.trim()) {
+            setError('Expense name is required.');
+            return;
+        }
+
+        const amount = parseFloat(formData.amount);
+        if (isNaN(amount) || amount < 0) {
+            setError('Expense amount must be a positive number.');
+            return;
+        }
+
+        if (!formData.date) {
+            setError('Expense date is required.');
+            return;
+        }
+
         try {
             if (editingId) {
                 const updateRequest = new UpdateExpenseRequest(

@@ -18,6 +18,9 @@ namespace WebProjekat.Infrastructure.Configurations
                 .IsRequired()
                 .HasMaxLength(150);
 
+            builder.HasIndex(u => u.Email)
+                .IsUnique();
+
             builder.Property(u => u.Password)
                 .IsRequired();
 

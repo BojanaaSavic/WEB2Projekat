@@ -14,17 +14,42 @@ export default function Register() {
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePassword = (pwd) => {
+    if (pwd.length < 8) return 'Password must be at least 8 characters long.';
+    if (!/[a-z]/.test(pwd)) return 'Password must contain at least one lowercase letter.';
+    if (!/[A-Z]/.test(pwd)) return 'Password must contain at least one uppercase letter.';
+    if (!/\d/.test(pwd)) return 'Password must contain at least one digit (0-9).';
+    if (!/[@$!%*?&]/.test(pwd)) return 'Password must contain at least one special character (@$!%*?&).';
+    return '';
+  };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
+    if (!name.trim() || name.trim().length < 2) {
+      setError('Name must be at least 2 characters long.');
       return;
     }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters long');
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setError(passwordError);
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match.');
       return;
     }
 

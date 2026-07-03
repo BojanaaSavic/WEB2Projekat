@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebProjekat.Application.DTOs
 {
@@ -16,6 +17,8 @@ namespace WebProjekat.Application.DTOs
         /// Task or item to be completed
         /// </summary>
         /// <example>Book flights</example>
+        [Required(ErrorMessage = "Checklist item title is required.")]
+        [StringLength(200, MinimumLength = 2, ErrorMessage = "Title must be between 2 and 200 characters.")]
         public string Title { get; set; }
 
         /// <summary>
@@ -28,6 +31,7 @@ namespace WebProjekat.Application.DTOs
         /// Details about the checklist item
         /// </summary>
         /// <example>Book flights for the upcoming aniversary</example>
+        [StringLength(500, ErrorMessage = "Description cannot exceed 500 characters.")]
         public string Description { get; set; }
     }
 }

@@ -53,6 +53,32 @@ export default function EditPlan() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (!formData.name.trim()) {
+      setError('Travel plan name is required.');
+      return;
+    }
+
+    if (!formData.startDate) {
+      setError('Start date is required.');
+      return;
+    }
+
+    if (!formData.endDate) {
+      setError('End date is required.');
+      return;
+    }
+
+    if (new Date(formData.endDate) < new Date(formData.startDate)) {
+      setError('End date cannot be before start date.');
+      return;
+    }
+
+    if (parseFloat(formData.plannedBudget) < 0) {
+      setError('Budget cannot be negative.');
+      return;
+    }
+
     try {
       const updated = await travelPlanService.updatePlan(planId, {
         name: formData.name,

@@ -17,9 +17,30 @@ export default function Login() {
   const params = new URLSearchParams(location.search);
   const redirectTo = params.get('redirect') || '/dashboard';
 
+  const validateEmail = (emailValue) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(emailValue);
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (!email.trim()) {
+      setError('Email is required.');
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      setError('Please enter a valid email address.');
+      return;
+    }
+
+    if (!password.trim()) {
+      setError('Password is required.');
+      return;
+    }
+
     setLoading(true);
 
     try {

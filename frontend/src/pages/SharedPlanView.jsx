@@ -127,7 +127,6 @@ export default function SharedPlanView() {
                     <h3>Checklist</h3>
                     {plan.checklistItems.map(item => (
                         <div key={item.id} className="checklist-item">
-                            {/* Popravka: item.title umjesto item.name */}
                             <span>{item.isCompleted ? '✅' : '⬜'} {item.title}</span>
                         </div>
                     ))}
