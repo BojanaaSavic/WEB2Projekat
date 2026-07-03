@@ -2,7 +2,6 @@ import api from './api';
 import { SharedPlanToken } from '../models/SharedPlanToken';
 
 export const sharingService = {
-  // Create shared token for plan
     createSharedToken: async (planId, createRequest) => {
         try {
             const accessParam = createRequest.accessType === 'Edit' ? 'Edit' : 'View';
@@ -21,7 +20,6 @@ export const sharingService = {
         }
     },
 
-  // Get all shared tokens for plan
   getSharedTokens: async (planId) => {
     try {
       const response = await api.get(`/api/travelplans/${planId}/share`);
@@ -38,7 +36,6 @@ export const sharingService = {
     }
   },
 
-  // Delete shared token
   deleteSharedToken: async (planId, tokenId) => {
     try {
       await api.delete(`/api/travelplans/${planId}/share/${tokenId}`);
@@ -47,7 +44,6 @@ export const sharingService = {
     }
   },
 
-  // Access shared plan by token
   getSharedPlan: async (token) => {
     try {
       const response = await api.get(`/api/travelplans/shared/${token}`);
@@ -57,7 +53,6 @@ export const sharingService = {
     }
   },
 
-  // Generate QR code for token
   generateQRCode: async (token) => {
     try {
         const response = await api.get(`/api/travelplans/shared/${token}/qr`, {
@@ -67,5 +62,86 @@ export const sharingService = {
     } catch (error) {
       throw error.response?.data?.message || 'Failed to generate QR code';
     }
-  },
+   },
+
+    updateSharedPlan: async (token, dto) => {
+        try {
+            const response = await api.put(`/api/travelplans/shared/${token}`, dto);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data?.message || 'Failed to update travel plan';
+        }
+    },
+
+    addSharedDestination: async (token, destination) => {
+        try {
+            const response = await api.post(`/api/travelplans/shared/${token}/destinations`, destination);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data?.message || 'Failed to add destination';
+        }
+    },
+    updateSharedDestination: async (token, destinationId, destination) => {
+        try {
+            const response = await api.put(`/api/travelplans/shared/${token}/destinations/${destinationId}`, destination);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data?.message || 'Failed to update destination';
+        }
+    },
+
+    addSharedActivity: async (token, activity) => {
+        try {
+            const response = await api.post(`/api/travelplans/shared/${token}/activities`, activity);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data?.message || 'Failed to add activity';
+        }
+    },
+    updateSharedActivity: async (token, activityId, activity) => {
+        try {
+            const response = await api.put(`/api/travelplans/shared/${token}/activities/${activityId}`, activity);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data?.message || 'Failed to update activity';
+        }
+    },
+
+    addSharedChecklistItem: async (token, item) => {
+        try {
+            const response = await api.post(`/api/travelplans/shared/${token}/checklist`, item);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data?.message || 'Failed to add checklist item';
+        }
+    },
+    updateSharedChecklistItem: async (token, itemId, item) => {
+        try {
+            const response = await api.put(`/api/travelplans/shared/${token}/checklist/${itemId}`, item);
+            return response.data;
+        } catch (error) {
+            throw error.response?.data?.message || 'Failed to update checklist item';
+        }
+    },
+    deleteSharedDestination: async (token, destinationId) => {
+        try {
+            await api.delete(`/api/travelplans/shared/${token}/destinations/${destinationId}`);
+        } catch (error) {
+            throw error.response?.data?.message || 'Failed to delete destination';
+        }
+    },
+    deleteSharedActivity: async (token, activityId) => {
+        try {
+            await api.delete(`/api/travelplans/shared/${token}/activities/${activityId}`);
+        } catch (error) {
+            throw error.response?.data?.message || 'Failed to delete activity';
+        }
+    },
+    deleteSharedChecklistItem: async (token, itemId) => {
+        try {
+            await api.delete(`/api/travelplans/shared/${token}/checklist/${itemId}`);
+        } catch (error) {
+            throw error.response?.data?.message || 'Failed to delete checklist item';
+        }
+    },
 };

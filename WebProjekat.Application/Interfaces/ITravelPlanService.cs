@@ -40,6 +40,18 @@ namespace WebProjekat.Application.Interfaces
         Task<bool> DeleteSharedTokenAsync(Guid planId, Guid tokenId, Guid ownerId);
 
         Task<IEnumerable<ActivityCalendarDayDTO>> GetActivitiesCalendarAsync(Guid planId, Guid ownerId);
+        Task<TravelPlanDTO> UpdateViaShareTokenAsync(string token, CreateTravelPlanDTO dto, Guid editorUserId);
+        Task<DestinationDTO> AddDestinationViaShareTokenAsync(string token, DestinationDTO dto);
+        Task<DestinationDTO> UpdateDestinationViaShareTokenAsync(string token, Guid destinationId, DestinationDTO dto);
+
+        Task<ActivityDTO> AddActivityViaShareTokenAsync(string token, ActivityDTO dto);
+        Task<ActivityDTO> UpdateActivityViaShareTokenAsync(string token, Guid activityId, ActivityDTO dto);
+
+        Task<ChecklistItemDTO> AddChecklistItemViaShareTokenAsync(string token, ChecklistItemDTO dto);
+        Task<ChecklistItemDTO> UpdateChecklistItemViaShareTokenAsync(string token, Guid checklistItemId, ChecklistItemDTO dto);
+        Task<bool> RemoveDestinationViaShareTokenAsync(string token, Guid destinationId);
+        Task<bool> RemoveActivityViaShareTokenAsync(string token, Guid activityId);
+        Task<bool> RemoveChecklistItemViaShareTokenAsync(string token, Guid checklistItemId);
 
         // Admin
         Task<IEnumerable<AdminTravelPlanDTO>> GetAllPlansAdminAsync();

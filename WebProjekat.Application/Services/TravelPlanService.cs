@@ -150,6 +150,176 @@ namespace WebProjekat.Application.Services
             return true;
         }
 
+        
+        private async Task<TravelPlan> ValidateEditTokenAsync(string token)
+        {
+            var shared = await _context.SharedPlanTokens
+                .Include(s => s.TravelPlan)
+                .FirstOrDefaultAsync(s => s.Token == token);
+
+            if (shared == null || !shared.IsValid()) return null;
+            if (shared.AccessLevel != ShareAccessLevel.Edit) return null;
+
+            return shared.TravelPlan;
+        }
+
+        public async Task<TravelPlanDTO> UpdateViaShareTokenAsync(string token, CreateTravelPlanDTO dto, Guid editorUserId)
+        {
+            if (dto.EndDate < dto.StartDate) throw new ArgumentException("End date cannot be before start date.");
+            if (dto.PlannedBudget < 0) throw new ArgumentException("Budget cannot be negative.");
+
+            var plan = await ValidateEditTokenAsync(token);
+            if (plan == null) return null;
+
+            plan.Update(dto.Name, dto.Description, dto.StartDate, dto.EndDate, dto.PlannedBudget, dto.Notes, plan.OwnerId);
+            _context.TravelPlans.Update(plan);
+            await _context.SaveChangesAsync();
+
+            return await MapToDtoAsync(plan);
+        }
+
+        public async Task<DestinationDTO> AddDestinationViaShareTokenAsync(string token, DestinationDTO dto)
+        {
+            var plan = await ValidateEditTokenAsync(token);
+            if (plan == null) return null;
+
+            var dest = new Destination(plan.Id, dto.Name, dto.Location, dto.ArrivalDate, dto.DepartureDate, dto.Description);
+            _context.Destinations.Add(dest);
+            await _context.SaveChangesAsync();
+            dto.Id = dest.Id;
+            return dto;
+        }
+
+        public async Task<DestinationDTO> UpdateDestinationViaShareTokenAsync(string token, Guid destinationId, DestinationDTO dto)
+        {
+            var plan = await ValidateEditTokenAsync(token);
+            if (plan == null) return null;
+
+            var dest = await _context.Destinations.FirstOrDefaultAsync(d => d.Id == destinationId && d.TravelPlanId == plan.Id);
+            if (dest == null) return null;
+
+            dest.Update(dto.Name, dto.Location, dto.ArrivalDate, dto.DepartureDate, dto.Description);
+            _context.Destinations.Update(dest);
+            await _context.SaveChangesAsync();
+
+            return new DestinationDTO
+            {
+                Id = dest.Id,
+                Name = dest.Name,
+                Location = dest.Location,
+                ArrivalDate = dest.ArrivalDate,
+                DepartureDate = dest.DepartureDate,
+                Description = dest.Description
+            };
+        }
+
+        public async Task<ActivityDTO> AddActivityViaShareTokenAsync(string token, ActivityDTO dto)
+        {
+            var plan = await ValidateEditTokenAsync(token);
+            if (plan == null) return null;
+
+            var activity = new Activity(plan.Id, dto.Name, dto.ScheduledAt, dto.Location, dto.Description, dto.EstimatedCost, dto.Status);
+            _context.Activities.Add(activity);
+            await _context.SaveChangesAsync();
+            dto.Id = activity.Id;
+            return dto;
+        }
+
+        public async Task<ActivityDTO> UpdateActivityViaShareTokenAsync(string token, Guid activityId, ActivityDTO dto)
+        {
+            var plan = await ValidateEditTokenAsync(token);
+            if (plan == null) return null;
+
+            var act = await _context.Activities.FirstOrDefaultAsync(a => a.Id == activityId && a.TravelPlanId == plan.Id);
+            if (act == null) return null;
+
+            act.Update(dto.Name, dto.ScheduledAt, dto.Location, dto.Description, dto.EstimatedCost, dto.Status);
+            _context.Activities.Update(act);
+            await _context.SaveChangesAsync();
+
+            return new ActivityDTO
+            {
+                Id = act.Id,
+                Name = act.Name,
+                ScheduledAt = act.ScheduledAt,
+                Location = act.Location,
+                Description = act.Description,
+                EstimatedCost = act.EstimatedCost,
+                Status = act.Status
+            };
+        }
+
+        public async Task<ChecklistItemDTO> AddChecklistItemViaShareTokenAsync(string token, ChecklistItemDTO dto)
+        {
+            var plan = await ValidateEditTokenAsync(token);
+            if (plan == null) return null;
+
+            var item = new ChecklistItem(plan.Id, dto.Title, dto.IsCompleted, dto.Description);
+            _context.ChecklistItems.Add(item);
+            await _context.SaveChangesAsync();
+            dto.Id = item.Id;
+            return dto;
+        }
+
+        public async Task<ChecklistItemDTO> UpdateChecklistItemViaShareTokenAsync(string token, Guid checklistItemId, ChecklistItemDTO dto)
+        {
+            var plan = await ValidateEditTokenAsync(token);
+            if (plan == null) return null;
+
+            var item = await _context.ChecklistItems.FirstOrDefaultAsync(c => c.Id == checklistItemId && c.TravelPlanId == plan.Id);
+            if (item == null) return null;
+
+            item.Update(dto.Title, dto.IsCompleted, dto.Description);
+            _context.ChecklistItems.Update(item);
+            await _context.SaveChangesAsync();
+
+            return new ChecklistItemDTO
+            {
+                Id = item.Id,
+                Title = item.Title,
+                IsCompleted = item.IsCompleted
+            };
+        }
+
+        public async Task<bool> RemoveDestinationViaShareTokenAsync(string token, Guid destinationId)
+        {
+            var plan = await ValidateEditTokenAsync(token);
+            if (plan == null) return false;
+
+            var dest = await _context.Destinations.FirstOrDefaultAsync(d => d.Id == destinationId && d.TravelPlanId == plan.Id);
+            if (dest == null) return false;
+
+            _context.Destinations.Remove(dest);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveActivityViaShareTokenAsync(string token, Guid activityId)
+        {
+            var plan = await ValidateEditTokenAsync(token);
+            if (plan == null) return false;
+
+            var act = await _context.Activities.FirstOrDefaultAsync(a => a.Id == activityId && a.TravelPlanId == plan.Id);
+            if (act == null) return false;
+
+            _context.Activities.Remove(act);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveChecklistItemViaShareTokenAsync(string token, Guid checklistItemId)
+        {
+            var plan = await ValidateEditTokenAsync(token);
+            if (plan == null) return false;
+
+            var item = await _context.ChecklistItems.FirstOrDefaultAsync(c => c.Id == checklistItemId && c.TravelPlanId == plan.Id);
+            if (item == null) return false;
+
+            _context.ChecklistItems.Remove(item);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task<DestinationDTO> AddDestinationAsync(Guid planId, DestinationDTO dto, Guid ownerId)
         {
             var plan = await _context.TravelPlans.FirstOrDefaultAsync(p => p.Id == planId && p.OwnerId == ownerId);

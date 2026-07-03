@@ -1,17 +1,17 @@
 import { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 export default function ProtectedRoute({ children }) {
-  const { isAuthenticated, loading } = useContext(AuthContext);
+    const { isAuthenticated, loading } = useContext(AuthContext);
+    const location = useLocation();
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
+    if (loading) {
+        return <div className="loading">Loading...</div>;
+    }
+    if (!isAuthenticated) {
+        const redirectTo = encodeURIComponent(location.pathname + location.search);
+        return <Navigate to={`/login?redirect=${redirectTo}`} replace />;
+    }
+    return children;
 }

@@ -136,7 +136,10 @@ export default function SharedPlanView() {
             {canEdit && (
                 <div className="overview-card">
                     <h3>Edit Access</h3>
-                    <p>You have edit access to this plan. Contact the owner to make changes directly.</p>
+                    <p>You have edit access to this plan.</p>
+                    <button className="btn-primary" onClick={() => navigate(`/shared/${token}/edit`)}>
+                        Edit Plan
+                    </button>
                 </div>
             )}
         </div>
