@@ -40,7 +40,7 @@ packages/
 # Environment files
 ############################
 
-
+*.env
 
 ############################
 # React / Node
