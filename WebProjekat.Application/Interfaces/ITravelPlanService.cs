@@ -54,7 +54,7 @@ namespace WebProjekat.Application.Interfaces
         Task<bool> RemoveChecklistItemViaShareTokenAsync(string token, Guid checklistItemId);
 
         // Admin
-        Task<IEnumerable<AdminTravelPlanDTO>> GetAllPlansAdminAsync();
+        Task<IEnumerable<AdminTravelPlanDTO>> GetAllPlansAdminAsync(string authToken);
         Task<bool> DeletePlanAdminAsync(Guid planId);
         Task<AdminStatisticsDTO> GetAdminStatisticsAsync();
         Task DeletePlansByOwnerAsync(Guid ownerId);

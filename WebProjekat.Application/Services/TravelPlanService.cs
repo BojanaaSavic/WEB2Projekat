@@ -601,7 +601,7 @@ namespace WebProjekat.Application.Services
             return grouped;
         }
 
-        public async Task<IEnumerable<AdminTravelPlanDTO>> GetAllPlansAdminAsync()
+        public async Task<IEnumerable<AdminTravelPlanDTO>> GetAllPlansAdminAsync(string authToken)
         {
             var plans = await _context.TravelPlans
                 .Include(p => p.Destinations)
@@ -609,18 +609,57 @@ namespace WebProjekat.Application.Services
                 .Include(p => p.ChecklistItems)
                 .ToListAsync();
 
-            return plans.Select(p => new AdminTravelPlanDTO
+            var client = _httpClientFactory.CreateClient("Gateway");
+            if (!string.IsNullOrWhiteSpace(authToken))
             {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                StartDate = p.StartDate,
-                EndDate = p.EndDate,
-                PlannedBudget = p.PlannedBudget,
-                OwnerName = p.OwnerId.ToString(),
-                OwnerEmail = "",
-                CreatedAt = p.CreatedAt
-            }).ToList();
+                client.DefaultRequestHeaders.Authorization =
+                    System.Net.Http.Headers.AuthenticationHeaderValue.Parse(authToken);
+            }
+
+            var result = new List<AdminTravelPlanDTO>();
+
+            foreach (var p in plans)
+            {
+                string ownerName = p.OwnerId.ToString();
+                string ownerEmail = "";
+
+                try
+                {
+                    var response = await client.GetAsync($"api/admin/users/{p.OwnerId}");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var user = await response.Content.ReadFromJsonAsync<AdminUserDTO>();
+                        if (user != null)
+                        {
+                            ownerName = user.Name;
+                            ownerEmail = user.Email;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Gateway returned {response.StatusCode} for owner {p.OwnerId}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Warning: Could not fetch owner info for plan {p.Id}: {ex}");
+                }
+
+                result.Add(new AdminTravelPlanDTO
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description,
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    PlannedBudget = p.PlannedBudget,
+                    OwnerName = ownerName,
+                    OwnerEmail = ownerEmail,
+                    CreatedAt = p.CreatedAt
+                });
+            }
+
+            return result;
         }
 
         public async Task<bool> DeletePlanAdminAsync(Guid planId)
