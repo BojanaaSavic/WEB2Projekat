@@ -27,12 +27,12 @@ function addSummary(doc, plan) {
   const startY = 45;
   doc.setFontSize(12);
   doc.setFont(undefined, 'bold');
-  doc.text('Pregled', 14, startY);
+  doc.text('View', 14, startY);
 
   const summaryData = [
-    ['Budžet', `$${(plan.plannedBudget ?? 0).toFixed(2)}`],
-    ['Potrošeno', `$${(plan.totalExpenses ?? 0).toFixed(2)}`],
-    ['Preostalo', `$${(plan.remainingBudget ?? 0).toFixed(2)}`],
+    ['Budget', `$${(plan.plannedBudget ?? 0).toFixed(2)}`],
+    ['Expenses', `$${(plan.totalExpenses ?? 0).toFixed(2)}`],
+    ['Remaining', `$${(plan.remainingBudget ?? 0).toFixed(2)}`],
   ];
 
   autoTable(doc, {
@@ -71,7 +71,7 @@ function addSectionTitle(doc, title, y) {
 
 function addDestinations(doc, destinations, y) {
   if (!destinations?.length) return y;
-  y = addSectionTitle(doc, `Destinacije (${destinations.length})`, y);
+  y = addSectionTitle(doc, `Destinations (${destinations.length})`, y);
 
   const rows = destinations.map(d => [
     d.name,
@@ -81,7 +81,7 @@ function addDestinations(doc, destinations, y) {
 
   autoTable(doc, {
     startY: y,
-    head: [['Naziv', 'Lokacija', 'Period']],
+    head: [['Name', 'Location', 'Period']],
     body: rows,
     theme: 'striped',
     headStyles: { fillColor: BRAND_PRIMARY },
@@ -93,7 +93,7 @@ function addDestinations(doc, destinations, y) {
 
 function addActivities(doc, activities, y) {
   if (!activities?.length) return y;
-  y = addSectionTitle(doc, `Aktivnosti (${activities.length})`, y);
+  y = addSectionTitle(doc, `Activities (${activities.length})`, y);
 
   const sorted = [...activities].sort((a, b) => new Date(a.scheduledAt) - new Date(b.scheduledAt));
   const rows = sorted.map(a => [
@@ -104,7 +104,7 @@ function addActivities(doc, activities, y) {
 
   autoTable(doc, {
     startY: y,
-    head: [['Aktivnost', 'Termin', 'Lokacija']],
+    head: [['Activity', 'Time', 'Location']],
     body: rows,
     theme: 'striped',
     headStyles: { fillColor: BRAND_PRIMARY },
@@ -116,7 +116,7 @@ function addActivities(doc, activities, y) {
 
 function addExpenses(doc, expenses, y) {
   if (!expenses?.length) return y;
-  y = addSectionTitle(doc, `Troškovi (${expenses.length})`, y);
+  y = addSectionTitle(doc, `Expenses (${expenses.length})`, y);
 
   const rows = expenses.map(e => [
     e.title || e.description || '-',
@@ -126,11 +126,11 @@ function addExpenses(doc, expenses, y) {
   ]);
 
   const total = expenses.reduce((sum, e) => sum + (e.amount ?? 0), 0);
-  rows.push(['', '', 'Ukupno', `$${total.toFixed(2)}`]);
+  rows.push(['', '', 'Total', `$${total.toFixed(2)}`]);
 
   autoTable(doc, {
     startY: y,
-    head: [['Stavka', 'Kategorija', 'Datum', 'Iznos']],
+    head: [['Item', 'Category', 'Date', 'Amount']],
     body: rows,
     theme: 'striped',
     headStyles: { fillColor: BRAND_PRIMARY },
@@ -149,11 +149,11 @@ function addChecklist(doc, items, y) {
   if (!items?.length) return y;
   y = addSectionTitle(doc, `Checklist (${items.length})`, y);
 
-  const rows = items.map(item => [item.isCompleted ? 'Da' : 'Ne', item.title]);
+  const rows = items.map(item => [item.isCompleted ? 'Yes' : 'No', item.title]);
 
   autoTable(doc, {
     startY: y,
-    head: [['Završeno', 'Stavka']],
+    head: [['Completed', 'Item']],
     body: rows,
     theme: 'striped',
     headStyles: { fillColor: BRAND_PRIMARY },
@@ -171,7 +171,7 @@ function addFooter(doc) {
     doc.setFontSize(8);
     doc.setTextColor(150, 150, 150);
     doc.text(
-      `Generisano ${new Date().toLocaleDateString()} — Stranica ${i}/${pageCount}`,
+      `Generated ${new Date().toLocaleDateString()} — Page ${i}/${pageCount}`,
       14,
       doc.internal.pageSize.getHeight() - 10
     );

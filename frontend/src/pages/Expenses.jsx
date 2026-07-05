@@ -150,6 +150,7 @@ export default function Expenses() {
     if (loading) return <div className="loading">Loading expenses...</div>;
 
     const activityCosts = (currentPlan?.activities || [])
+        .filter(a => a.status !== "Cancelled")
         .reduce((sum, a) => sum + (a.estimatedCost || 0), 0);
 
     const planBudget = currentPlan?.plannedBudget || 0;

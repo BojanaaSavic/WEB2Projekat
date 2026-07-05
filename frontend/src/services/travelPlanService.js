@@ -1,6 +1,17 @@
 import api from './api';
 import { TravelPlan } from '../models/TravelPlan';
 
+const getErrorMessage = (error, fallback) => {
+    const data = error.response?.data;
+    if (typeof data === 'string') return data;
+    if (data?.message) return data.message;
+    if (data?.errors) {
+        const firstError = Object.values(data.errors).flat().find(Boolean);
+        if (firstError) return firstError;
+    }
+    return fallback;
+};
+
 export const travelPlanService = {
     getAllPlans: async () => {
         try {
@@ -17,7 +28,7 @@ export const travelPlanService = {
                 return plan;
             });
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to fetch travel plans';
+            throw getErrorMessage(error, 'Failed to fetch travel plans');
         }
     },
 
@@ -35,7 +46,7 @@ export const travelPlanService = {
             plan.remainingBudget = p.remainingBudget ?? 0;
             return plan;
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to fetch travel plan';
+            throw getErrorMessage(error, 'Failed to fetch travel plan');
         }
     },
 
@@ -58,7 +69,7 @@ export const travelPlanService = {
         p.checklistItems || []
       );
     } catch (error) {
-      throw error.response?.data?.message || 'Failed to create travel plan';
+      throw getErrorMessage(error, 'Failed to create travel plan');
     }
   },
 
@@ -81,8 +92,7 @@ export const travelPlanService = {
         p.checklistItems || []
       );
     } catch (error) {
-      const data = error.response?.data;
-      throw typeof data === 'string' ? data : data?.message || 'Failed to update travel plan';
+      throw getErrorMessage(error, 'Failed to update travel plan');
     }
   },
 
@@ -90,7 +100,7 @@ export const travelPlanService = {
     try {
       await api.delete(`/api/travelplans/${planId}`);
     } catch (error) {
-      throw error.response?.data?.message || 'Failed to delete travel plan';
+      throw getErrorMessage(error, 'Failed to delete travel plan');
     }
   },
 };

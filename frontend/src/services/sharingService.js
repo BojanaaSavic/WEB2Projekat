@@ -1,6 +1,17 @@
 import api from './api';
 import { SharedPlanToken } from '../models/SharedPlanToken';
 
+const getErrorMessage = (error, fallback) => {
+    const data = error.response?.data;
+    if (typeof data === 'string') return data;
+    if (data?.message) return data.message;
+    if (data?.errors) {
+        const firstError = Object.values(data.errors).flat().find(Boolean);
+        if (firstError) return firstError;
+    }
+    return fallback;
+};
+
 export const sharingService = {
     createSharedToken: async (planId, createRequest) => {
         try {
@@ -16,7 +27,7 @@ export const sharingService = {
                 t.expiresAt
             );
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to create shared token';
+            throw getErrorMessage(error, 'Failed to create shared token');
         }
     },
 
@@ -32,7 +43,7 @@ export const sharingService = {
         t.expiresAt
       ));
     } catch (error) {
-      throw error.response?.data?.message || 'Failed to fetch shared tokens';
+      throw getErrorMessage(error, 'Failed to fetch shared tokens');
     }
   },
 
@@ -40,7 +51,7 @@ export const sharingService = {
     try {
       await api.delete(`/api/travelplans/${planId}/share/${tokenId}`);
     } catch (error) {
-      throw error.response?.data?.message || 'Failed to delete shared token';
+      throw getErrorMessage(error, 'Failed to delete shared token');
     }
   },
 
@@ -49,7 +60,7 @@ export const sharingService = {
       const response = await api.get(`/api/travelplans/shared/${token}`);
       return response.data;
     } catch (error) {
-      throw error.response?.data?.message || 'Invalid or expired token';
+      throw getErrorMessage(error, 'Invalid or expired token');
     }
   },
 
@@ -60,7 +71,7 @@ export const sharingService = {
       });
       return response.data;
     } catch (error) {
-      throw error.response?.data?.message || 'Failed to generate QR code';
+      throw getErrorMessage(error, 'Failed to generate QR code');
     }
    },
 
@@ -69,7 +80,7 @@ export const sharingService = {
             const response = await api.put(`/api/travelplans/shared/${token}`, dto);
             return response.data;
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to update travel plan';
+            throw getErrorMessage(error, 'Failed to update travel plan');
         }
     },
 
@@ -78,7 +89,7 @@ export const sharingService = {
             const response = await api.post(`/api/travelplans/shared/${token}/destinations`, destination);
             return response.data;
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to add destination';
+            throw getErrorMessage(error, 'Failed to add destination');
         }
     },
     updateSharedDestination: async (token, destinationId, destination) => {
@@ -86,7 +97,7 @@ export const sharingService = {
             const response = await api.put(`/api/travelplans/shared/${token}/destinations/${destinationId}`, destination);
             return response.data;
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to update destination';
+            throw getErrorMessage(error, 'Failed to update destination');
         }
     },
 
@@ -95,7 +106,7 @@ export const sharingService = {
             const response = await api.post(`/api/travelplans/shared/${token}/activities`, activity);
             return response.data;
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to add activity';
+            throw getErrorMessage(error, 'Failed to add activity');
         }
     },
     updateSharedActivity: async (token, activityId, activity) => {
@@ -103,7 +114,7 @@ export const sharingService = {
             const response = await api.put(`/api/travelplans/shared/${token}/activities/${activityId}`, activity);
             return response.data;
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to update activity';
+            throw getErrorMessage(error, 'Failed to update activity');
         }
     },
 
@@ -112,7 +123,7 @@ export const sharingService = {
             const response = await api.post(`/api/travelplans/shared/${token}/checklist`, item);
             return response.data;
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to add checklist item';
+            throw getErrorMessage(error, 'Failed to add checklist item');
         }
     },
     updateSharedChecklistItem: async (token, itemId, item) => {
@@ -120,28 +131,28 @@ export const sharingService = {
             const response = await api.put(`/api/travelplans/shared/${token}/checklist/${itemId}`, item);
             return response.data;
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to update checklist item';
+            throw getErrorMessage(error, 'Failed to update checklist item');
         }
     },
     deleteSharedDestination: async (token, destinationId) => {
         try {
             await api.delete(`/api/travelplans/shared/${token}/destinations/${destinationId}`);
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to delete destination';
+            throw getErrorMessage(error, 'Failed to delete destination');
         }
     },
     deleteSharedActivity: async (token, activityId) => {
         try {
             await api.delete(`/api/travelplans/shared/${token}/activities/${activityId}`);
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to delete activity';
+            throw getErrorMessage(error, 'Failed to delete activity');
         }
     },
     deleteSharedChecklistItem: async (token, itemId) => {
         try {
             await api.delete(`/api/travelplans/shared/${token}/checklist/${itemId}`);
         } catch (error) {
-            throw error.response?.data?.message || 'Failed to delete checklist item';
+            throw getErrorMessage(error, 'Failed to delete checklist item');
         }
     },
 };

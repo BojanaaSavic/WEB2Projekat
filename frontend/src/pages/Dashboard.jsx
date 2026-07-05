@@ -53,6 +53,33 @@ export default function Dashboard() {
     e.preventDefault();
     setError('');
 
+    const today = new Date().toISOString().split('T')[0];
+
+    if (!formData.name.trim()) {
+      setError('Travel plan name is required.');
+      return;
+    }
+
+    if (!formData.startDate) {
+      setError('Start date is required.');
+      return;
+    }
+
+    if (!formData.endDate) {
+      setError('End date is required.');
+      return;
+    }
+
+    if (formData.startDate < today) {
+      setError('Start date cannot be in the past.');
+      return;
+    }
+
+    if (formData.endDate < formData.startDate) {
+      setError('End date cannot be before start date.');
+      return;
+    }
+
     try {
       const createRequest = new CreateTravelPlanRequest(
         formData.name,

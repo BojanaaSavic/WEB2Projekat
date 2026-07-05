@@ -35,7 +35,8 @@ namespace WebProjekat.Domain.Entities
         public void Update(string name, string description, DateTime startDate, DateTime endDate, decimal plannedBudget, string notes, Guid ownerId)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Name is required.", nameof(name));
-            if (endDate < startDate) throw new ArgumentException("End date cannot be before start date.");
+            if (startDate.Date < DateTime.UtcNow.Date) throw new ArgumentException("Start date cannot be in the past.");
+            if (endDate.Date < startDate.Date) throw new ArgumentException("End date cannot be before start date.");
             if (plannedBudget < 0) throw new ArgumentException("Planned budget cannot be negative.");
 
             Name = name;

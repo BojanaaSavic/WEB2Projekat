@@ -28,9 +28,16 @@ export class TravelPlan {
     this.checklistItems = checklistItems;
   }
 
+  getActivityCosts() {
+    return (this.activities || [])
+      .filter(activity => activity?.status !== 'Cancelled')
+      .reduce((sum, activity) => sum + (Number(activity?.estimatedCost) || 0), 0);
+  }
+
   // Calculate total expenses
   getTotalExpenses() {
-    return this.expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    const expenseTotal = (this.expenses || []).reduce((sum, expense) => sum + (Number(expense?.amount) || 0), 0);
+    return expenseTotal + this.getActivityCosts();
   }
 
   // Calculate remaining budget

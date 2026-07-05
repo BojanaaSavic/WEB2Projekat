@@ -731,7 +731,9 @@ namespace WebProjekat.Application.Services
 
         private async Task<TravelPlanDTO> MapToDtoAsync(TravelPlan p)
         {
-            var activityCosts = p.Activities?.Sum(a => a.EstimatedCost) ?? 0;
+            var activityCosts = p.Activities?
+                .Where(a => a.Status != ActivityStatus.Cancelled)
+                .Sum(a => a.EstimatedCost) ?? 0;
 
             decimal expenseTotal = 0;
             List<ExpenseDTO> planExpenses = new List<ExpenseDTO>();

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { sharingService } from '../services/sharingService';
 import '../styles/Dashboard.css';
+import '../styles/Checklist.css';
 
 const emptyDestination = { name: '', location: '', arrivalDate: '', departureDate: '', description: '' };
 const emptyActivity = { name: '', scheduledAt: '', location: '', description: '', estimatedCost: 0, status: 'Planned' };
@@ -70,6 +71,34 @@ export default function SharedPlanEdit() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+
+        const today = new Date().toISOString().split('T')[0];
+
+        if (!formData.name.trim()) {
+            setError('Travel plan name is required.');
+            return;
+        }
+
+        if (!formData.startDate) {
+            setError('Start date is required.');
+            return;
+        }
+
+        if (!formData.endDate) {
+            setError('End date is required.');
+            return;
+        }
+
+        if (formData.startDate < today) {
+            setError('Start date cannot be in the past.');
+            return;
+        }
+
+        if (formData.endDate < formData.startDate) {
+            setError('End date cannot be before start date.');
+            return;
+        }
+
         setSaving(true);
         try {
             await sharingService.updateSharedPlan(token, {
@@ -369,44 +398,59 @@ export default function SharedPlanEdit() {
             </div>
 
             {/* Checklist */}
-            <div className="overview-card">
+            <div className="overview-card shared-checklist-section">
                 <h3>Checklist</h3>
-                {checklistItems.map(item => (
-                    editingChecklistId === item.id ? (
-                        <ChecklistEditRow
-                            key={item.id}
-                            item={item}
-                            onSave={(dto) => handleUpdateChecklistItem(item.id, dto)}
-                            onCancel={() => setEditingChecklistId(null)}
-                        />
-                    ) : (
-                        <div key={item.id} className="checklist-item">
-                            <label>
-                                <input type="checkbox" checked={item.isCompleted} onChange={() => handleToggleChecklistItem(item)} />
-                                {' '}{item.title}
-                            </label>
-                            <div style={{ display: 'flex', gap: '0.5rem' }}>
-                               <button className="btn-secondary" onClick={() => setEditingChecklistId(item.id)}>Edit</button>
-                               <button className="btn-danger" onClick={() => handleDeleteChecklistItem(item.id)}>Delete</button>
+                <div className="shared-checklist-list">
+                    {checklistItems.map(item => (
+                        editingChecklistId === item.id ? (
+                            <ChecklistEditRow
+                                key={item.id}
+                                item={item}
+                                onSave={(dto) => handleUpdateChecklistItem(item.id, dto)}
+                                onCancel={() => setEditingChecklistId(null)}
+                            />
+                        ) : (
+                            <div key={item.id} className="checklist-item shared-checklist-item">
+                                <label className="shared-checklist-label">
+                                    <input
+                                        type="checkbox"
+                                        checked={item.isCompleted}
+                                        onChange={() => handleToggleChecklistItem(item)}
+                                    />
+                                    {' '}{item.title}
+                                    {item.description}
+                                </label>
+                                <div className="shared-checklist-actions">
+                                    <button className="btn-secondary" onClick={() => setEditingChecklistId(item.id)}> Edit </button>
+                                    <button className="btn-danger" onClick={() => handleDeleteChecklistItem(item.id)}> Delete </button>
+                                </div>
                             </div>
-                        </div>
-                    )
-                ))}
+                        )
+                    ))}
+                </div>
 
-                <h4>Add Checklist Item</h4>
                 <div className="form-row">
                     <div className="form-group">
                         <label>Title *</label>
-                        <input value={newChecklistItem.title} onChange={e => setNewChecklistItem(prev => ({ ...prev, title: e.target.value }))} />
+                        <input
+                            value={newChecklistItem.title}
+                            onChange={e => setNewChecklistItem(prev => ({ ...prev, title: e.target.value }))}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Description</label>
+                        <input
+                            value={newChecklistItem.description}
+                            onChange={e => setNewChecklistItem(prev => ({ ...prev, description: e.target.value }))}
+                        />
                     </div>
                 </div>
-                <button className="btn-primary" onClick={handleAddChecklistItem}>Add Item</button>
             </div>
         </div>
     );
 }
 
-// ----- Pomoæne komponente za inline edit -----
+// ----- Pomocne komponente za inline edit -----
 
 function DestinationEditRow({ destination, onSave, onCancel }) {
     const [dto, setDto] = useState({
@@ -515,13 +559,19 @@ function ChecklistEditRow({ item, onSave, onCancel }) {
 
     return (
         <div className="checklist-item">
+            <div classname="form-row">
             <div className="form-group">
                 <label>Title</label>
                 <input value={dto.title} onChange={e => setDto(prev => ({ ...prev, title: e.target.value }))} />
             </div>
+            <div className="form-group">
+                <label>Description</label>
+                <input value={dto.description} onChange={e => setDto(prev => ({ ...prev, description: e.target.value}))}/>
+            </div>
             <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button className="btn-primary" onClick={() => onSave(dto)}>Save</button>
                 <button className="btn-secondary" onClick={onCancel}>Cancel</button>
+            </div>
             </div>
         </div>
     );

@@ -61,6 +61,7 @@ Plan može biti dijeljen sa drugim osobama putem linka ili QR koda. Postoje dva 
 - UserService (stateless) - autentifikacija i korisnici
 - TravelPlanService (stateful) - planovi, destinacije, aktivnosti
 - ExpenseService (stateless) - troškovi i dijeljenje
+- ApiGatewayService - komunikacija između servisa i frontenda
 
 ## Preduslovi
 

@@ -54,6 +54,8 @@ export default function EditPlan() {
     e.preventDefault();
     setError('');
 
+    const today = new Date().toISOString().split('T')[0];
+
     if (!formData.name.trim()) {
       setError('Travel plan name is required.');
       return;
@@ -69,7 +71,12 @@ export default function EditPlan() {
       return;
     }
 
-    if (new Date(formData.endDate) < new Date(formData.startDate)) {
+    if (formData.startDate < today) {
+      setError('Start date cannot be in the past.');
+      return;
+    }
+
+    if (formData.endDate < formData.startDate) {
       setError('End date cannot be before start date.');
       return;
     }
