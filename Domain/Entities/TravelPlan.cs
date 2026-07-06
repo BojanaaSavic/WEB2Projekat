@@ -16,14 +16,10 @@ namespace WebProjekat.Domain.Entities
         public Guid OwnerId { get; private set; }
 
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
-
-        // Navigation
         public ICollection<Destination> Destinations { get; private set; } = new List<Destination>();
         public ICollection<Activity> Activities { get; private set; } = new List<Activity>();
         public ICollection<ChecklistItem> ChecklistItems { get; private set; } = new List<ChecklistItem>();
         public ICollection<SharedPlanToken> SharedTokens { get; private set; } = new List<SharedPlanToken>();
-
-        // Required by EF
         private TravelPlan() { }
 
         public TravelPlan(string name, string description, DateTime startDate, DateTime endDate, decimal plannedBudget, string notes, Guid ownerId)
@@ -50,7 +46,6 @@ namespace WebProjekat.Domain.Entities
 
         public void AddDestination(Destination d) => Destinations.Add(d);
         public void AddActivity(Activity a) => Activities.Add(a);
-        //public void AddExpense(Expense e) => Expenses.Add(e);
         public void AddChecklistItem(ChecklistItem c) => ChecklistItems.Add(c);
         public void AddSharedToken(SharedPlanToken t) => SharedTokens.Add(t);
     }

@@ -1,4 +1,3 @@
-// Activity Status enum
 export const ActivityStatus = {
   PLANNED: 'Planned',
   RESERVED: 'Reserved',
@@ -6,7 +5,6 @@ export const ActivityStatus = {
   CANCELLED: 'Cancelled',
 };
 
-// Activity model
 export class Activity {
   constructor(
     id,

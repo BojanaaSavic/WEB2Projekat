@@ -29,6 +29,12 @@
   color: #4CAF50;
 }
 
+.brand-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
 .navbar-toggle {
   display: none;
   background: none;

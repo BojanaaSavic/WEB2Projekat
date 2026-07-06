@@ -2,7 +2,6 @@ import api from './api';
 import { ChecklistItem } from '../models/ChecklistItem';
 
 export const checklistService = {
-  // Get all checklist items for a travel plan
   getChecklistItems: async (planId) => {
     try {
       const response = await api.get(`/api/travelplans/${planId}/checklist`);
@@ -18,7 +17,6 @@ export const checklistService = {
     }
   },
 
-  // Get single checklist item
   getChecklistItem: async (planId, itemId) => {
     try {
       const response = await api.get(`/api/travelplans/${planId}/checklist/${itemId}`);
@@ -35,7 +33,6 @@ export const checklistService = {
     }
   },
 
-  // Create checklist item
   createChecklistItem: async (planId, createRequest) => {
     try {
       const response = await api.post(`/api/travelplans/${planId}/checklist`, createRequest);
@@ -52,7 +49,6 @@ export const checklistService = {
     }
   },
 
-  // Update checklist item
   updateChecklistItem: async (planId, itemId, updateRequest) => {
     try {
       const response = await api.put(
@@ -72,7 +68,6 @@ export const checklistService = {
     }
   },
 
-  // Delete checklist item
   deleteChecklistItem: async (planId, itemId) => {
     try {
       await api.delete(`/api/travelplans/${planId}/checklist/${itemId}`);
@@ -81,7 +76,6 @@ export const checklistService = {
     }
   },
 
-  // Get completion percentage
   getCompletionPercentage: async (planId) => {
     try {
       const response = await api.get(`/api/travelplans/${planId}/checklist/completion`);

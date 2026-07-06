@@ -122,3 +122,16 @@
 .card-action-button:hover {
   background-color: #45a049;
 }
+
+.card-items span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  vertical-align: middle;
+}

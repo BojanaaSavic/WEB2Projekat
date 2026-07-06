@@ -1,4 +1,3 @@
-// Expense categories
 export const ExpenseCategories = {
   TRANSPORT: 'Transport',
   ACCOMMODATION: 'Accommodation',
@@ -8,7 +7,6 @@ export const ExpenseCategories = {
   OTHER: 'Other',
 };
 
-// Expense model
 export class Expense {
   constructor(
     id,

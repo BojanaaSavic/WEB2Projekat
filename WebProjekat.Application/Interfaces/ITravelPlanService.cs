@@ -15,7 +15,7 @@ namespace WebProjekat.Application.Interfaces
 
         Task<string> SharePlanAsync(Guid id, Guid ownerId, string accessLevel, TimeSpan validFor);
 
-        // Sub-entity management
+        // Destinations, Activities, ChecklistItems
         Task<DestinationDTO> AddDestinationAsync(Guid planId, DestinationDTO dto, Guid ownerId);
         Task<DestinationDTO> GetDestinationAsync(Guid planId, Guid destinationId, Guid ownerId);
         Task<IEnumerable<DestinationDTO>> GetDestinationsAsync(Guid planId, Guid ownerId);

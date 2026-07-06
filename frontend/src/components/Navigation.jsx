@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import '../styles/Navigation.css';
+import {planeIcon} from '../assets';
 
 export default function Navigation() {
   const { user, logout, isAuthenticated } = useContext(AuthContext);
@@ -21,7 +22,8 @@ export default function Navigation() {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/dashboard" className="navbar-brand">
-          ✈️ Travel Planner
+          <img src={planeIcon} alt="" className="brand-icon" />
+          Travel Planner
         </Link>
 
         <button

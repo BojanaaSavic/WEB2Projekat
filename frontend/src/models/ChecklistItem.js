@@ -1,4 +1,3 @@
-// Checklist Item model
 export class ChecklistItem {
   constructor(
     id,

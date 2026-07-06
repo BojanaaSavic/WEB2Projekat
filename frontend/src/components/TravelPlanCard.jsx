@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { TravelPlanContext } from '../context/TravelPlanContext';
 import '../styles/TravelPlanCard.css';
 import { travelPlanService } from '../services/travelPlanService';
+import { locationIcon, calendarIcon, expenseIcon } from '../assets';
 
 export default function TravelPlanCard({ plan }) {
   const navigate = useNavigate();
@@ -78,9 +79,18 @@ export default function TravelPlanCard({ plan }) {
       </div>
 
       <div className="card-items">
-        <span>📍 {plan.destinations?.length || 0} Destinations</span>
-        <span>📅 {plan.activities?.length || 0} Activities</span>
-        <span>💰 {plan.expenses?.length || 0} Expenses</span>
+        <span>
+          <img src={locationIcon} alt="Destinations" className="card-icon" />
+          {plan.destinations?.length || 0} Destinations
+        </span>
+        <span>
+          <img src={calendarIcon} alt="Activities" className="card-icon" />
+          {plan.activities?.length || 0} Activities
+        </span>
+        <span>
+          <img src={expenseIcon} alt="Expenses" className="card-icon" />
+          {plan.expenses?.length || 0} Expenses
+        </span>
       </div>
 
       <button className="card-action-button">View Details →</button>

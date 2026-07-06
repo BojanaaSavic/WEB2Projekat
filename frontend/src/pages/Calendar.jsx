@@ -129,7 +129,6 @@ export default function Calendar() {
     setShowForm(false);
   };
 
-  // Get activities grouped by date
   const getActivitiesByDate = (date) => {
     return activities.filter(a => {
       const activityDate = new Date(a.scheduledAt).toDateString();
@@ -137,7 +136,6 @@ export default function Calendar() {
     });
   };
 
-  // Render calendar grid
   const renderCalendar = () => {
     const year = currentMonth.getFullYear();
     const month = currentMonth.getMonth();

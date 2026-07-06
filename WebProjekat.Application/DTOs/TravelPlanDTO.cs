@@ -16,7 +16,6 @@ namespace WebProjekat.Application.DTOs
         public decimal TotalExpenses { get; set; }
         public decimal RemainingBudget { get; set; }
 
-        // Collections (light)
         public ICollection<DestinationDTO> Destinations { get; set; } = new List<DestinationDTO>();
         public ICollection<ActivityDTO> Activities { get; set; } = new List<ActivityDTO>();
         public ICollection<ExpenseDTO> Expenses { get; set; } = new List<ExpenseDTO>();

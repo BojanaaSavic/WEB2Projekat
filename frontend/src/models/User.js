@@ -1,4 +1,3 @@
-// User model
 export class User {
   constructor(id, name, email, role = 'User') {
     this.id = id;
@@ -8,7 +7,6 @@ export class User {
   }
 }
 
-// Auth models
 export class LoginRequest {
   constructor(email, password) {
     this.email = email;

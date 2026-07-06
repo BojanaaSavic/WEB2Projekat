@@ -137,7 +137,6 @@ export default function Expenses() {
         setShowForm(false);
     };
 
-    // Calculate totals
     const totalExpenses = expenses.reduce((sum, e) => sum + e.amount, 0);
     const expensesByCategory = Object.values(ExpenseCategories).map(category => ({
         category,

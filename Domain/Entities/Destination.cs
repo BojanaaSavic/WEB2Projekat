@@ -12,7 +12,6 @@ namespace WebProjekat.Domain.Entities
         public DateTime DepartureDate { get; private set; }
         public string Description { get; private set; }
 
-        // Navigation
         public TravelPlan TravelPlan { get; private set; }
 
         private Destination() { }

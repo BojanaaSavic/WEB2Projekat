@@ -1,4 +1,3 @@
-// Destination model
 export class Destination {
   constructor(
     id,

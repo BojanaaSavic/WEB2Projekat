@@ -62,7 +62,7 @@ export default function SharedPlanEdit() {
         loadPlan();
     }, [token, isAuthenticated]);
 
-    // ----- Osnovni podaci plana -----
+    // TravelPlan
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -117,7 +117,7 @@ export default function SharedPlanEdit() {
         }
     };
 
-    // ----- Destinacije -----
+    // Destinations
     const handleAddDestination = async () => {
         try {
             const created = await sharingService.addSharedDestination(token, newDestination);
@@ -138,7 +138,7 @@ export default function SharedPlanEdit() {
         }
     };
 
-    // ----- Aktivnosti -----
+    // Activities
     const handleAddActivity = async () => {
         try {
             const created = await sharingService.addSharedActivity(token, newActivity);
@@ -159,7 +159,7 @@ export default function SharedPlanEdit() {
         }
     };
 
-    // ----- Checklist -----
+    // Checklist
     const handleAddChecklistItem = async () => {
         try {
             const created = await sharingService.addSharedChecklistItem(token, newChecklistItem);
@@ -188,7 +188,7 @@ export default function SharedPlanEdit() {
         });
     };
 
-    // ----- Deleting -----
+    // Deleting 
     const handleDeleteDestination = async (destinationId) => {
         if (!window.confirm('Delete this destination?')) return;
         try {
@@ -232,7 +232,7 @@ export default function SharedPlanEdit() {
 
             {error && <div className="error-message">{error}</div>}
 
-            {/* Osnovni podaci plana */}
+            {/* Main Form */}
             <div className="create-form-container">
                 <form onSubmit={handleSubmit}>
                     <div className="form-row">
@@ -280,7 +280,7 @@ export default function SharedPlanEdit() {
                 </form>
             </div>
 
-            {/* Destinacije */}
+            {/* Destinations */}
             <div className="overview-card">
                 <h3>Destinations</h3>
                 {destinations.map(d => (
@@ -333,7 +333,7 @@ export default function SharedPlanEdit() {
                 <button className="btn-primary" onClick={handleAddDestination}>Add Destination</button>
             </div>
 
-            {/* Aktivnosti */}
+            {/* Activities */}
             <div className="overview-card">
                 <h3>Activities</h3>
                 {activities.map(a => (
@@ -450,7 +450,7 @@ export default function SharedPlanEdit() {
     );
 }
 
-// ----- Pomocne komponente za inline edit -----
+// Helpers
 
 function DestinationEditRow({ destination, onSave, onCancel }) {
     const [dto, setDto] = useState({

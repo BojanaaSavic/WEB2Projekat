@@ -2,7 +2,6 @@ import api from './api';
 import { Destination } from '../models/Destination';
 
 export const destinationService = {
-  // Get all destinations for a travel plan
   getDestinations: async (planId) => {
     try {
       const response = await api.get(`/api/travelplans/${planId}/destinations`);
@@ -20,7 +19,6 @@ export const destinationService = {
     }
   },
 
-  // Get single destination
   getDestination: async (planId, destinationId) => {
     try {
       const response = await api.get(`/api/travelplans/${planId}/destinations/${destinationId}`);
@@ -39,7 +37,6 @@ export const destinationService = {
     }
   },
 
-  // Create destination
   createDestination: async (planId, createRequest) => {
     try {
       const response = await api.post(`/api/travelplans/${planId}/destinations`, createRequest);
@@ -58,7 +55,6 @@ export const destinationService = {
     }
   },
 
-  // Update destination
   updateDestination: async (planId, destinationId, updateRequest) => {
     try {
       const response = await api.put(
@@ -80,7 +76,6 @@ export const destinationService = {
     }
   },
 
-  // Delete destination
   deleteDestination: async (planId, destinationId) => {
     try {
       await api.delete(`/api/travelplans/${planId}/destinations/${destinationId}`);

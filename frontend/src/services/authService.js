@@ -33,7 +33,6 @@ export const authService = {
     }
   },
 
-  // Logout (client-side only, just clear sessionStorage)
   logout: () => {
     sessionStorage.removeItem('authToken');
     sessionStorage.removeItem('authUser');

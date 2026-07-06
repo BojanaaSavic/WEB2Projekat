@@ -1,4 +1,3 @@
-// Travel Plan model
 export class TravelPlan {
   constructor(
     id,
@@ -34,18 +33,15 @@ export class TravelPlan {
       .reduce((sum, activity) => sum + (Number(activity?.estimatedCost) || 0), 0);
   }
 
-  // Calculate total expenses
   getTotalExpenses() {
     const expenseTotal = (this.expenses || []).reduce((sum, expense) => sum + (Number(expense?.amount) || 0), 0);
     return expenseTotal + this.getActivityCosts();
   }
 
-  // Calculate remaining budget
-  getRemainingBudget() {
+ getRemainingBudget() {
     return this.plannedBudget - this.getTotalExpenses();
   }
 
-  // Get days until start
   getDaysUntilStart() {
     const today = new Date();
     const start = new Date(this.startDate);
