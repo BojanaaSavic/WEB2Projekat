@@ -1,0 +1,229 @@
+<mxfile host="app.diagrams.net" agent="Claude">
+  <diagram name="Use Case - Travel Planner" id="travelplanner1">
+    <mxGraphModel dx="1873" dy="1022" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1650" pageHeight="1275" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="id104" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=8;spacingTop=6;fillColor=none;strokeColor=#666666;dashed=0;" value="Autentifikacija" vertex="1">
+          <mxGeometry height="190" width="300" x="640" y="197.5" as="geometry" />
+        </mxCell>
+        <mxCell id="id105" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=8;spacingTop=6;fillColor=none;strokeColor=#666666;dashed=0;" value="Upravljanje planom putovanja" vertex="1">
+          <mxGeometry height="190" width="480" x="80" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="id106" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=8;spacingTop=6;fillColor=none;strokeColor=#666666;dashed=0;" value="Upravljanje destinacijama" vertex="1">
+          <mxGeometry height="190" width="360" x="630" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="id107" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=8;spacingTop=6;fillColor=none;strokeColor=#666666;dashed=0;" value="Organizacija aktivnosti" vertex="1">
+          <mxGeometry height="250" width="380" x="280" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="id108" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=8;spacingTop=6;fillColor=none;strokeColor=#666666;dashed=0;" value="Evidencija troskova i budzet" vertex="1">
+          <mxGeometry height="240" width="360" x="1050" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="id109" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=8;spacingTop=6;fillColor=none;strokeColor=#666666;dashed=0;" value="Checklist" vertex="1">
+          <mxGeometry height="190" width="300" x="720" y="720" as="geometry" />
+        </mxCell>
+        <mxCell id="id110" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=8;spacingTop=6;fillColor=none;strokeColor=#666666;dashed=0;" value="Dijeljenje plana putovanja" vertex="1">
+          <mxGeometry height="190" width="400" x="1070" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="id111" parent="1" style="rounded=0;whiteSpace=wrap;html=1;verticalAlign=top;align=left;fontStyle=1;fontSize=13;spacingLeft=8;spacingTop=6;fillColor=none;strokeColor=#666666;dashed=0;" value="Administracija" vertex="1">
+          <mxGeometry height="190" width="400" x="125" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="id112" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Prijava" vertex="1">
+          <mxGeometry height="50" width="100" x="815" y="267.5" as="geometry" />
+        </mxCell>
+        <mxCell id="id113" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Registracija" vertex="1">
+          <mxGeometry height="50" width="110" x="665" y="240" as="geometry" />
+        </mxCell>
+        <mxCell id="id114" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Odjava" vertex="1">
+          <mxGeometry height="50" width="110" x="670" y="317.5" as="geometry" />
+        </mxCell>
+        <mxCell id="id115" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Kreiranje plana" vertex="1">
+          <mxGeometry height="50" width="140" x="100" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="id116" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Pregled svih planova" vertex="1">
+          <mxGeometry height="50" width="150" x="255" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="id117" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Pregled detalja plana" vertex="1">
+          <mxGeometry height="50" width="130" x="415" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="id118" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Izmjena plana" vertex="1">
+          <mxGeometry height="50" width="130" x="100" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="id119" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Brisanje plana" vertex="1">
+          <mxGeometry height="50" width="130" x="245" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="id120" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Generisanje PDF izvjestaja" vertex="1">
+          <mxGeometry height="50" width="160" x="385" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="id121" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Dodavanje destinacije" vertex="1">
+          <mxGeometry height="50" width="150" x="650" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="id122" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Pregled destinacija" vertex="1">
+          <mxGeometry height="50" width="150" x="820" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="id123" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Izmjena destinacije" vertex="1">
+          <mxGeometry height="50" width="150" x="650" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="id124" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Brisanje destinacije" vertex="1">
+          <mxGeometry height="50" width="150" x="820" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="id125" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Dodavanje aktivnosti" vertex="1">
+          <mxGeometry height="50" width="150" x="300" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="id126" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Pregled aktivnosti" vertex="1">
+          <mxGeometry height="50" width="150" x="470" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="id127" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Pregled kalendara aktivnosti" vertex="1">
+          <mxGeometry height="50" width="160" x="300" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="id128" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Izmjena aktivnosti" vertex="1">
+          <mxGeometry height="50" width="150" x="480" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="id129" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Brisanje aktivnosti" vertex="1">
+          <mxGeometry height="50" width="150" x="390" y="900" as="geometry" />
+        </mxCell>
+        <mxCell id="id130" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Evidentiranje troska" vertex="1">
+          <mxGeometry height="50" width="150" x="1065" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="id131" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Pregled troskova" vertex="1">
+          <mxGeometry height="50" width="150" x="1235" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="id132" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Pregled budzeta" vertex="1">
+          <mxGeometry height="50" width="150" x="1065" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="id133" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Izmena troska" vertex="1">
+          <mxGeometry height="50" width="150" x="1235" y="570" as="geometry" />
+        </mxCell>
+        <mxCell id="id134" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Brisanje troska" vertex="1">
+          <mxGeometry height="50" width="150" x="1150" y="625" as="geometry" />
+        </mxCell>
+        <mxCell id="id135" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Dodavanje stavke" vertex="1">
+          <mxGeometry height="50" width="140" x="740" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="id136" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Brisanje stavke" vertex="1">
+          <mxGeometry height="50" width="120" x="890" y="800" as="geometry" />
+        </mxCell>
+        <mxCell id="id137" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Izmjena stavke" vertex="1">
+          <mxGeometry height="50" width="140" x="740" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="id138" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Generisanje linka / QR koda" vertex="1">
+          <mxGeometry height="55" width="170" x="1090" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="id139" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Pregled dijeljenog plana (VIEW)" vertex="1">
+          <mxGeometry height="55" width="170" x="1090" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="id140" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Uredjivanje dijeljenog plana (EDIT)" vertex="1">
+          <mxGeometry height="55" width="180" x="1270" y="265" as="geometry" />
+        </mxCell>
+        <mxCell id="id141" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Pregled svih korisnika" vertex="1">
+          <mxGeometry height="50" width="160" x="145" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="id142" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Brisanje korisnika" vertex="1">
+          <mxGeometry height="50" width="160" x="145" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="id143" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Pregled svih planova" vertex="1">
+          <mxGeometry height="50" width="160" x="335" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="id144" parent="1" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" value="Brisanje korisnickih planova" vertex="1">
+          <mxGeometry height="50" width="170" x="335" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-3" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Gost" vertex="1">
+          <mxGeometry height="60" width="30" x="1250" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-4" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Korisnik" vertex="1">
+          <mxGeometry height="60" width="30" x="775" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-5" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="Admin" vertex="1">
+          <mxGeometry height="60" width="30" x="310" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-6" edge="1" parent="1" style="endArrow=block;endSize=16;endFill=0;html=1;rounded=0;exitX=1;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;" value="">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <mxPoint x="340" y="80" as="sourcePoint" />
+            <mxPoint x="770" y="80" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-7" edge="1" parent="1" source="Zvrfbslq84FFPmkjQRRh-3" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.667;exitY=1.333;exitDx=0;exitDy=0;exitPerimeter=0;" target="id110" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="770" y="390" as="sourcePoint" />
+            <mxPoint x="820" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-9" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="id111" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="325" y="130" as="sourcePoint" />
+            <mxPoint x="510" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-10" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="id104" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="790" y="120" as="sourcePoint" />
+            <mxPoint x="800" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-11" edge="1" parent="1" source="id140" style="endArrow=open;endSize=12;dashed=1;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="id112" value="&amp;lt;&amp;lt;extends&amp;gt;&amp;gt;">
+          <mxGeometry relative="1" width="160" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="293" />
+            </Array>
+            <mxPoint x="700" y="290" as="sourcePoint" />
+            <mxPoint x="860" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-12" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.936;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="id106" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="967" y="120" />
+            </Array>
+            <mxPoint x="810" y="120" as="sourcePoint" />
+            <mxPoint x="780" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-13" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0;entryDx=0;entryDy=0;" target="id105" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="100" />
+            </Array>
+            <mxPoint x="750" y="100" as="sourcePoint" />
+            <mxPoint x="460" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-14" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="1120" y="90" />
+            </Array>
+            <mxPoint x="810" y="90" as="sourcePoint" />
+            <mxPoint x="1120" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-15" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0;entryDx=0;entryDy=0;" target="id108" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="1050" y="100" />
+            </Array>
+            <mxPoint x="810" y="100" as="sourcePoint" />
+            <mxPoint x="1078" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-16" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.936;entryY=0.008;entryDx=0;entryDy=0;entryPerimeter=0;" target="id109" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="1001" y="110" />
+            </Array>
+            <mxPoint x="820" y="110" as="sourcePoint" />
+            <mxPoint x="770" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Zvrfbslq84FFPmkjQRRh-17" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0.836;entryY=-0.005;entryDx=0;entryDy=0;entryPerimeter=0;" target="id107" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="120" />
+            </Array>
+            <mxPoint x="760" y="120" as="sourcePoint" />
+            <mxPoint x="570" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
